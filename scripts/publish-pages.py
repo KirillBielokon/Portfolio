@@ -59,7 +59,7 @@ def main():
     if actual != commit:
         raise SystemExit('Remote verification failed; inspect gh-pages.')
     print(f'Static build uploaded and verified: {commit}')
-    print('GitHub Pages activation and IONOS DNS are separate required steps.')
+    print('Verify the GitHub Pages deployment run before confirming the live update.')
 
 
 if __name__ == '__main__':

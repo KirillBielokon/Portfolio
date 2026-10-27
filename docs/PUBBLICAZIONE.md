@@ -1,5 +1,9 @@
 # Pubblicazione su kirillbielokon.com
 
+## Stato attuale
+
+**L’utente ha confermato che il sito funziona sul dominio.** La migrazione a GitHub Pages è completata dal suo punto di vista. Le sezioni successive conservano lo storico diagnostico: non ripetere cambi DNS, richieste di chiavi IONOS o rimozioni del custom domain per un aggiornamento del sito. Il redesign successivo viene caricato nel ramo `gh-pages`, mantenendo dominio e impostazioni HTTPS.
+
 ## Stato verificato dopo le modifiche dell’utente
 
 GitHub conferma la pubblicazione riuscita del commit della build `8859e50` nel [deployment Pages #1](https://github.com/KirillBielokon/Portfolio/actions/runs/40536623125), ramo `gh-pages`. L’URL dell’ambiente è `http://kirillbielokon.com/`. Questo è un riscontro di pubblicazione dell’hosting, non una verifica diretta di DNS o HTTPS.

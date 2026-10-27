@@ -1,19 +1,22 @@
-# Verifiche del redesign
+# Verifiche — Studio 02
 
-Eseguite il 27 ottobre 2026 sulla nuova versione locale. Non costituiscono una verifica del dominio pubblico o del progetto Sites, che non sono stati aggiornati da questa sessione.
+Redesign successivo alla conferma dell’utente che il dominio pubblico funziona. Dominio, record DNS e configurazione HTTPS non vengono modificati per questo aggiornamento.
 
-- Installazione riproducibile: `npm ci --cache /tmp/portfolio-npm-cache --no-audit --no-fund` completata.
-- Build di produzione: `npm run build` completata.
-- Test Playwright: 10 superati, 0 falliti. Coprono layout a 320/390/768/1440 px, finestre progetto, dichiarazione dei concept, accordion, WhatsApp e brief, menu da tastiera e movimento ridotto.
-- Controlli axe: nessuna violazione rilevata su homepage, tre finestre progetto, contatti, brief e menu mobile dopo il completamento delle animazioni.
-- Lighthouse mobile emulato, build di produzione locale: prestazioni 98, accessibilità 100, best practice 100, SEO 100. LCP 2,3 s; CLS 0; TBT 60 ms. Sono misure di laboratorio, non dati degli utenti reali.
-- Nessun errore JavaScript o richiesta fallita rilevata nelle sessioni di verifica.
-- Immagine hero responsive: varianti 640/960/1536 px, con caricamento della versione da 72 KB nel profilo mobile Lighthouse.
-- Controllati pausa dello scorrimento decorativo, ripristino del menu al resize desktop e link WhatsApp diretto nella sezione contatti.
-- Nessun messaggio di prova è stato inviato al numero WhatsApp reale; sono stati verificati solamente indirizzi e testo precompilato.
+## Comportamento
 
-## Stato di consegna
+- Build Vite completata.
+- **12 test Playwright superati**, 0 falliti, sulla build di produzione.
+- Rendering reale del canvas, tre composizioni differenti, pausa e movimento ridotto verificati tramite contenuto pixel, oltre allo stato accessibile dei controlli.
+- Layout a 320, 390, 768 e 1440 px: nessuno scorrimento orizzontale.
+- Galleria desktop: selezione e scroll tra i concept, apertura/chiusura delle finestre e disclosure degli studi personali.
+- Mobile: tutti e tre i concept in sequenza verticale.
+- Menu mobile: focus contenuto, Escape, ripristino dello sfondo e passaggio a desktop.
+- Form: email facoltativa, brief, modifica, download e link WhatsApp corretto. Nessun messaggio inviato al numero reale durante i test.
+- Controlli axe: nessuna violazione rilevata su homepage, modalità Social, contatti, menu mobile e progetto Campo nelle schermate verificate.
+- Nessun errore JavaScript o richiesta fallita nelle sessioni di verifica funzionale locale.
 
-Il codice, gli asset, le anteprime e la build `dist/` sono presenti nel checkout. Installazione e avvio sono salvati nella bozza della configurazione cloud. La bozza richiede revisione/salvataggio nelle impostazioni e pubblicazione dell’ambiente; questa operazione è distinta dalla pubblicazione del sito web.
+## Movimento e prestazioni
 
-Non sono disponibili strumenti di modifica o pubblicazione del progetto Sites collegato. Il sito pubblico `kirillbielokon.com` non è stato sostituito. Il pacchetto `/workspace/portfolio-pronto-da-pubblicare.zip` contiene i file statici da caricare sul proprio hosting; README.md descrive la configurazione.
+Il laboratorio sospende l’animazione fuori schermo e a scheda nascosta, supporta una pausa esplicita e la preferenza di movimento ridotto. La regia di scroll usa un driver nativo con misure memorizzate: durante lo scroll non vengono richiesti nuovi calcoli di layout. I contenuti restano visibili anche scorrendo velocemente. Il carattere dei titoli è locale e precaricato.
+
+I risultati di Lighthouse sono misure di laboratorio sulla build locale, non dati dei visitatori reali. Audit finale mobile isolato, sulla build `index-D8RTiwBZ.js`: **prestazioni95, accessibilità100, bestpractice100, SEO100**. FCP/LCP0,8s; TBT250ms; CLS0; SpeedIndex1,2s. Le scene e il canvas sono attivi durante la misura.

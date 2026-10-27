@@ -1,17 +1,17 @@
-# Kirill Bielokon — Portfolio
+# Kirill Bielokon — Fatti notare.
 
-Portfolio in italiano dedicato a **sviluppo web e social media management**. React, Vite, CSS e asset locali; nessun CMS, account o chiave API necessari.
+Portfolio personale in italiano per **sviluppo web e social media management**, pubblicato con GitHub Pages sul dominio `kirillbielokon.com`. Il dominio è registrato su IONOS; l’utente ha confermato che sito e HTTPS funzionano. Per aggiornare il design non occorre riconfigurare DNS o rimuovere il dominio.
 
-## Avvio
+## Sviluppo
 
-Richiede Node.js 22.12+ (verificato con Node 24) e npm.
+Node.js 22.12+ (verificato con Node 24), npm e Python 3 per il caricamento della build.
 
 ```sh
 npm ci
 npm run dev
 ```
 
-In questo ambiente cloud, usare `npm ci --cache /tmp/portfolio-npm-cache` per mantenere la cache in un percorso scrivibile.
+Nell’ambiente cloud usare `npm ci --cache /tmp/portfolio-npm-cache` per la cache scrivibile. Il checkout è già isolato: non servono worktree aggiuntivi.
 
 ## Build e verifiche
 
@@ -20,39 +20,36 @@ npm run build
 npm test
 ```
 
-I test Playwright avviano automaticamente la build in anteprima sulla porta 4173. Verificano layout a quattro larghezze, progetti, accordion, WhatsApp, compilazione del brief, tastiera e movimento ridotto. Usano Chromium di sistema se presente; altrove installare il browser con `npx playwright install chromium` o specificare `CHROMIUM_PATH`.
-
-## Contenuti e contatti
-
-- `src/content.js`: servizi, progetti, FAQ e numero WhatsApp confermato da Kirill.
-- `src/main.jsx`: sezioni, finestre dei concept e generatore del brief.
-- `src/styles.css`: identità visiva, animazioni e layout responsive.
-- `public/images/`: asset locali. I concept di Forma, Aether e Campo sono studi per brand immaginari, dichiarati esplicitamente; non vengono attribuiti a clienti reali.
-- La scultura della hero è un’immagine generata per questa direzione visiva. I mockup web/social sono illustrazioni SVG originali; i caratteri sono distribuiti dai pacchetti Fontsource con licenza OFL.
-
-Il contatto principale apre WhatsApp sul numero `+39 389 632 2180`. Il brief è composto esclusivamente nel browser; il visitatore deve scegliere di aprire WhatsApp e inviare il messaggio. Non esiste un finto invio server. Non sono integrati tracker, analytics, cookie applicativi o storage del form.
+I 12 test Playwright avviano la build in anteprima sulla porta 4173. Coprono quattro larghezze, rendering e trasformazioni del laboratorio canvas, pausa, movimento ridotto, selezione dei concept, dialog, accordion, menu da tastiera e WhatsApp/brief. Usano Chromium di sistema se presente; altrove eseguire `npx playwright install chromium` o specificare `CHROMIUM_PATH`.
 
 ## Pubblicazione
 
-`npm run build` genera il sito statico in `dist/`. Configurazione hosting:
+```sh
+npm run build
+python3 scripts/publish-pages.py
+```
 
-- comando di installazione: `npm ci`
-- comando di build: `npm run build`
-- directory pubblica: `dist`
+Lo script carica il contenuto di `dist/` nel ramo `gh-pages`, senza cambiare il checkout sorgente, usando un indice temporaneo. Conserva la storia remota e rifiuta aggiornamenti concorrenti, senza force-push. GitHub Pages pubblica quel ramo. Attendere il successo del deployment prima di dichiarare completato l’aggiornamento.
 
-Il sito può essere distribuito su un hosting statico, ad esempio Cloudflare Pages, Netlify o Vercel. In alternativa, caricare il contenuto di `dist` nella document root dell’hosting esistente. Non caricare soltanto `index.html`: servono anche `assets/` e `images/`.
+`public/CNAME` deve restare `kirillbielokon.com`; `.nojekyll` conserva il sito statico. Non rimuovere il dominio dal pannello Pages per aggiornare codice o grafica. Conservare le impostazioni DNS e HTTPS già funzionanti.
 
-Questo repository non era collegato a un deployment e conteneva soltanto un README. Il redesign è stato costruito e verificato localmente: non è stato pubblicato su `kirillbielokon.com` né nel progetto Sites collegato, per cui non erano disponibili strumenti in questa sessione. Il dominio in canonical, sitemap e metadati corrisponde al dominio indicato da Kirill; se si usa un altro dominio, aggiornare questi riferimenti prima della pubblicazione.
+## Architettura e direzione visiva
 
-L’ambiente cloud è già isolato: usare questo checkout, senza creare worktree aggiuntivi.
+- `src/main.jsx`: layout da manifesto, galleria desktop guidata dallo scroll, sequenza mobile, sezioni e regia del movimento con un driver nativo e geometria memorizzata.
+- `src/useScrollScene.js`: avanzamento delle scene con un singolo frame per evento, misure memorizzate e aggiornamenti tramite proprietà CSS; nessuna libreria di animazione.
+- `src/Playground.jsx`: K modulare disegnata in Canvas2D, che si trasforma in un layout web o tre post social. Puntatore/touch, pausa, preferenza di movimento ridotto, sospensione fuori schermo e a scheda nascosta. Nessuna risorsa remota.
+- `src/Dialogs.jsx`: finestre dei concept e generatore del brief con dialog nativi, focus, Escape, copia/download e invio volontario tramite WhatsApp.
+- `src/content.js`: servizi, concept, FAQ e contatto confermato da Kirill.
+- `src/styles.css`: identità nera/lime/lilla, tipografia Anton/DM Sans/IBM Plex Mono e layout responsive. Font locali con licenza OFL.
+- `public/images/`: concept SVG originali per brand immaginari. Restano esplicitamente studi personali, senza clienti o metriche inventati.
 
-## Anteprime e risultati
+Il contatto apre WhatsApp su `+39 389 632 2180`. Il brief è composto nel browser e non viene inviato automaticamente. Nessun backend, tracker o storage del form; nessuna chiave API necessaria per lo sviluppo del sito.
 
-- [Anteprima desktop](docs/anteprima-desktop.png)
-- [Anteprima mobile](docs/anteprima-mobile.png)
-- [Pagina completa](docs/anteprima-completa.png)
-- [Verifiche eseguite](docs/VERIFICHE.md)
+## Anteprime
 
-## Collegamento al dominio IONOS
+- [Desktop](docs/anteprima-desktop.png)
+- [Mobile](docs/anteprima-mobile.png)
+- [Pagina completa, layout lineare](docs/anteprima-completa.png)
+- [Storico del collegamento del dominio](docs/PUBBLICAZIONE.md)
 
-È stata predisposta una destinazione GitHub Pages per il repository esistente, senza acquistare hosting. Il sorgente e il ramo di distribuzione non bastano a collegare il dominio: attivazione Pages, autorizzazione DNS IONOS e verifica pubblica sono passaggi distinti. Vedi [stato e procedura di pubblicazione](docs/PUBBLICAZIONE.md).
+Per rigenerare anteprime e immagine social con il server locale in esecuzione: `PREVIEW_ORIGIN=http://127.0.0.1:5173 node scripts/capture-previews.mjs`.

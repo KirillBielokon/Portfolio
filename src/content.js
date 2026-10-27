@@ -15,13 +15,13 @@ export const projects = [
     tags: ["Art direction", "Web design"],
     image: "/images/forma-concept.svg",
     color: "#deded2",
-    intro: "Spazio alle idee. E a ciò che le rende uniche.",
+    intro: "Una casa per i progetti.",
     description:
-      "Una direzione digitale per uno studio di architettura immaginario. Spazi ampi, una griglia rigorosa e una tipografia essenziale: il sito lascia che siano i progetti a raccontare lo studio.",
+      "Un concept web per uno studio di architettura immaginario. Ho lavorato su una homepage che presenta subito uno spazio, poi invita a esplorare il lavoro dello studio. Pochi elementi, proporzioni precise e colori presi dai materiali.",
     challenge:
-      "Tradurre la sensibilità di un progetto architettonico in un’esperienza digitale, dando alle immagini il loro spazio senza perdere chiarezza nella navigazione.",
+      "Chi visita il sito di un architetto deve poterne leggere il gusto già dal primo progetto. La sfida era dare spazio alle immagini e rendere immediati l’accesso ai lavori, la presentazione dello studio e il contatto.",
     approach:
-      "Un sistema editoriale costruito su ritmo, proporzioni e contrasti. La palette minerale si affianca a un indice dei progetti semplice e a transizioni misurate.",
+      "Una griglia orizzontale, un progetto in apertura e una navigazione ridotta all’essenziale. Avorio, verde oliva e titoli serif riprendono il carattere della villa illustrata. Ogni elemento dell’interfaccia lascia respiro al progetto.",
     deliverables: [
       "Direzione visiva",
       "Sistema tipografico",
@@ -37,13 +37,13 @@ export const projects = [
     tags: ["Identità digitale", "E-commerce concept"],
     image: "/images/aether-concept.svg",
     color: "#e8ddd0",
-    intro: "Una presenza essenziale. Una sensazione che resta.",
+    intro: "Il prodotto diventa il racconto.",
     description:
-      "Uno studio di e-commerce per un brand immaginario di skincare. Colori caldi, oggetti scultorei e un percorso di scoperta che mette al centro il prodotto.",
+      "Un concept di e-commerce per un brand immaginario di skincare. Una piccola gamma, presentata con colori caldi, composizioni di prodotto e testi brevi. Ho esplorato il primo incontro con il brand, dalla homepage alla scoperta dei prodotti.",
     challenge:
-      "Dare una personalità riconoscibile a un catalogo essenziale, bilanciando racconto di marca e leggibilità delle informazioni di prodotto.",
+      "Con pochi prodotti, ogni scelta pesa: come mostrarli, quali informazioni mettere in evidenza e dove invitare a proseguire. Volevo dare carattere alla vetrina mantenendo chiaro il percorso di acquisto.",
     approach:
-      "Toni della terra, dettagli editoriali e una gerarchia visiva netta. Il concept esplora come accompagnare la scoperta del prodotto senza sovraccaricare l’interfaccia.",
+      "Ho affiancato un titolo editoriale a una composizione di flacone e vasetto. Sabbia e ambra uniscono pagina e packaging; un solo invito principale accompagna alla scoperta della gamma. È uno studio visivo: non include un negozio o un checkout attivi.",
     deliverables: [
       "Direzione artistica",
       "Homepage e-commerce",
@@ -60,13 +60,13 @@ export const projects = [
     image: "/images/campo-social.svg",
     secondaryImage: "/images/campo-concept.svg",
     color: "#dce6ab",
-    intro: "Una voce riconoscibile. Anche nel feed.",
+    intro: "Tre rubriche. Una torrefazione.",
     description:
-      "Una direzione social per una torrefazione immaginaria. Tre filoni di contenuto — prodotto, cultura del caffè e community — uniti da un’identità visiva riconoscibile, dal feed al sito.",
+      "Un concept social per una torrefazione immaginaria. Ho costruito tre esempi di contenuto: un nuovo caffè, un piccolo approfondimento e un invito a passare in negozio. Il sito coordinato estende lo stesso linguaggio fuori dal feed.",
     challenge:
-      "Dare a una torrefazione indipendente una presenza social coerente, andando oltre le sole foto di prodotto. Cosa rende un profilo interessante anche per chi non conosce ancora il brand?",
+      "Un profilo fatto soltanto di confezioni rischia di esaurire presto quello che ha da dire. Serviva una struttura per parlare di prodotto, condividere la cultura del caffè e dare un motivo per visitare il locale.",
     approach:
-      "Tre rubriche: il prodotto da scoprire, il caffè da conoscere, il luogo da vivere. La palette verde bosco e lime, i titoli diretti e i layout coordinati costruiscono continuità tra i post e il concept web.",
+      "Tre rubriche con ruoli distinti e una famiglia di layout comune. Verde bosco, lime e titoli grandi rendono riconoscibili i post; illustrazioni e soggetti cambiano con il contenuto. Non è una campagna pubblicata e non le attribuisco risultati o metriche.",
     deliverables: [
       "Direzione social",
       "Tre rubriche editoriali",
@@ -79,9 +79,9 @@ export const projects = [
 export const services = [
   {
     number: "01",
-    title: "Un sito che ti rappresenta.",
+    title: "Siti web.",
     tag: "DESIGN & SVILUPPO WEB",
-    text: "Il punto di riferimento del tuo brand online. Progetto e sviluppo siti chiari, veloci e curati anche su mobile: raccontano cosa fai e rendono semplice contattarti.",
+    text: "Progetto e sviluppo il posto in cui raccontare bene la tua attività. Metto in ordine pagine, testi e interazioni, con attenzione a mobile, velocità e contatto. Il design parte da quello che hai da dire.",
     details: [
       "Web design su misura",
       "Sviluppo responsive",
@@ -90,9 +90,9 @@ export const services = [
   },
   {
     number: "02",
-    title: "Social con una direzione.",
+    title: "Social media.",
     tag: "SOCIAL MEDIA MANAGEMENT",
-    text: "Una presenza riconoscibile, senza pubblicare tanto per esserci. Definiamo obiettivi e tono di voce, costruiamo un piano editoriale e diamo continuità ai contenuti, dal visual alla didascalia.",
+    text: "Ti aiuto a decidere cosa pubblicare e perché. Definiamo pubblico, temi e tono di voce; preparo un piano editoriale, visual e didascalie. Canali, frequenza e gestione vengono concordati prima di iniziare.",
     details: [
       "Piano editoriale",
       "Design dei contenuti",
@@ -101,9 +101,9 @@ export const services = [
   },
   {
     number: "03",
-    title: "La stessa identità, ovunque.",
+    title: "Una sola direzione.",
     tag: "SITO + SOCIAL",
-    text: "Il sito e i social devono sembrare parte della stessa storia. Li progettiamo insieme, con messaggi coerenti e una direzione visiva condivisa: chi ti scopre su un canale ti riconosce anche sull’altro.",
+    text: "Se lavoriamo su sito e social insieme, tengo lo stesso filo tra immagini, parole e inviti al contatto. Chi passa da un post al tuo sito deve riconoscere la tua attività e capire subito come proseguire.",
     details: [
       "Direzione visiva coordinata",
       "Messaggi di brand",
@@ -115,22 +115,22 @@ export const services = [
 export const faqs = [
   {
     q: "Come inizia un progetto?",
-    a: "Con un messaggio su WhatsApp e un primo confronto. Mi racconti il tuo brand, cosa vuoi ottenere e cosa non funziona oggi. Da lì definiamo insieme perimetro, priorità, tempi e preventivo, prima di iniziare a progettare.",
+    a: "Scrivimi su WhatsApp: raccontami cosa fai, cosa ti serve e se hai già un sito o dei profili social. Nel primo confronto mettiamo a fuoco il lavoro. Poi preparo una proposta con attività, tempi e preventivo.",
   },
   {
     q: "Puoi riprogettare il mio sito attuale?",
-    a: "Sì. Partiamo da un’analisi di ciò che vale la pena conservare e di quello che ostacola i tuoi obiettivi. Il redesign può riguardare l’intero sito o un percorso specifico, in base alle tue necessità.",
+    a: "Sì. Guardo come è costruito, quali contenuti hai e dove il percorso si interrompe. Decidiamo cosa conservare e cosa rifare: può essere una pagina, un percorso oppure l’intero sito. L’estensione del lavoro viene definita nella proposta.",
   },
   {
     q: "Quanto costa e quanto tempo serve?",
-    a: "Dipende da pagine, contenuti, funzionalità e livello di personalizzazione. Dopo un primo confronto ricevi una proposta con attività, tempistiche e costi definiti. Nessun pacchetto standard scelto al posto tuo.",
+    a: "Prima devo capire il perimetro: numero di pagine, materiali disponibili, funzionalità o quantità di contenuti social. Ti indico costo e calendario nella proposta, prima di iniziare. Se hai un budget o una scadenza, dimmelo già nel primo messaggio.",
   },
   {
     q: "Puoi seguire sia il sito sia i social?",
-    a: "Sì. Possiamo partire da un singolo servizio oppure costruire un percorso coordinato: sito, contenuti e gestione social. Definiamo insieme canali, attività e frequenza, in base alle risorse e agli obiettivi del tuo brand.",
+    a: "Sì. Possiamo partire da un servizio oppure costruire un percorso coordinato. Nella proposta distinguiamo il progetto del sito dal lavoro ricorrente sui social, indicando per entrambi attività e materiali necessari.",
   },
   {
     q: "E dopo la pubblicazione?",
-    a: "La consegna comprende un passaggio di consegne chiaro. Possiamo concordare anche supporto, aggiornamenti e nuove evoluzioni: le attività successive vengono definite nella proposta.",
+    a: "Ti spiego come è organizzato il lavoro consegnato e cosa puoi gestire in autonomia. Supporto, aggiornamenti del sito e gestione continuativa dei social si concordano nella proposta, così sai cosa è incluso e cosa richiede un nuovo intervento.",
   },
 ];
