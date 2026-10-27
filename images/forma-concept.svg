@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1100" fill="none">
+<defs>
+ <linearGradient id="sky" x1="800" y1="220" x2="800" y2="850" gradientUnits="userSpaceOnUse"><stop stop-color="#c2c6b6"/><stop offset="1" stop-color="#e6e2d4"/></linearGradient>
+ <linearGradient id="wall" x1="800" y1="400" x2="800" y2="950" gradientUnits="userSpaceOnUse"><stop stop-color="#f0e7d6"/><stop offset="1" stop-color="#b8ac92"/></linearGradient>
+ <linearGradient id="glass" x1="750" y1="420" x2="800" y2="900" gradientUnits="userSpaceOnUse"><stop stop-color="#283a34"/><stop offset="1" stop-color="#758274"/></linearGradient>
+ <linearGradient id="ground" x1="800" y1="800" x2="800" y2="1000" gradientUnits="userSpaceOnUse"><stop stop-color="#b9b6a5"/><stop offset="1" stop-color="#d1c9b8"/></linearGradient>
+ <filter id="grain"><feTurbulence baseFrequency=".78" numOctaves="3" seed="8" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".09"/></feComponentTransfer><feBlend in="SourceGraphic" mode="multiply"/></filter>
+ <clipPath id="frame"><rect x="54" y="50" width="1492" height="1000" rx="3"/></clipPath>
+</defs>
+<rect width="1600" height="1100" fill="#777d6c"/>
+<rect x="75" y="76" width="1470" height="986" rx="4" fill="#263326" opacity=".19"/>
+<g clip-path="url(#frame)">
+<rect x="54" y="50" width="1492" height="1000" fill="#f1efe6"/>
+<text x="104" y="126" fill="#323c30" font-size="45" letter-spacing="-3" font-family="Georgia,serif">forma<tspan fill="#778365">.</tspan></text>
+<text x="105" y="145" fill="#323c30" font-size="10" letter-spacing="3" font-family="Arial,sans-serif">ARCHITECTURE STUDIO</text>
+<g fill="#3b4436" font-family="Arial,sans-serif" font-size="13" letter-spacing="1.5"><text x="780" y="122">STUDIO</text><text x="910" y="122">SELECTED WORKS</text><text x="1120" y="122">APPROACH</text><text x="1368" y="122">CONTACT ↗</text></g>
+<path d="M104 172H1495" stroke="#38412f" stroke-opacity=".22"/>
+<text x="104" y="266" fill="#353d30" font-family="Georgia,serif" font-size="77" letter-spacing="-3">Spaces to slow down.</text>
+<text x="1172" y="229" fill="#59614f" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.5">THOUGHTFUL ARCHITECTURE.</text><text x="1172" y="250" fill="#59614f" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.5">A QUIETER WAY OF LIVING.</text>
+<rect x="104" y="311" width="1392" height="615" fill="url(#sky)"/>
+<g filter="url(#grain)">
+<path d="M104 768Q300 721 520 755T960 729T1496 760V926H104Z" fill="#929b85"/>
+<path d="M104 829L1496 763V926H104Z" fill="url(#ground)"/>
+<!-- modern hillside villa -->
+<path d="M487 476L1137 432L1358 550L690 601Z" fill="#e7dfcc"/>
+<path d="M487 476L690 601V820L487 700Z" fill="#a39d88"/>
+<path d="M690 601L1358 550V803L690 850Z" fill="url(#wall)"/>
+<path d="M487 476L1137 432V455L488 504Z" fill="#d7cfbc"/>
+<path d="M690 601L1358 550V577L690 630Z" fill="#bfb59d"/>
+<path d="M736 647L1260 608V788L736 825Z" fill="url(#glass)"/>
+<path d="M736 647L999 627V805L736 825Z" fill="#293d35"/>
+<path d="M1012 626L1260 608V666L1012 684Z" fill="#91a18d" opacity=".45"/>
+<path d="M792 642V821M949 631V809M1107 619V798M1260 608V788" stroke="#464b3e" stroke-width="9"/>
+<path d="M736 647L1260 608M736 710L1260 672" stroke="#324438" stroke-width="6"/>
+<path d="M523 541L617 596V751L523 696Z" fill="#4b564a"/>
+<path d="M540 551V704M566 567V719M592 582V734" stroke="#2f3b31" stroke-width="5"/>
+<path d="M690 850L1358 803L1442 830L760 884Z" fill="#dbd0b9"/>
+<path d="M760 884L1442 830V842L760 898Z" fill="#9c9783"/>
+<path d="M690 850L760 884V898L690 865Z" fill="#868672"/>
+<!-- colonnade and warm light -->
+<path d="M1286 600L1304 599V808L1286 809Z" fill="#eee4ce"/>
+<path d="M1260 788L1286 809V600L1260 608Z" fill="#968e78"/>
+<path d="M1304 599L1390 801L1358 803V594Z" fill="#706e5b" opacity=".24"/>
+<!-- pool -->
+<path d="M506 864L1121 821L1240 857L620 906Z" fill="#ded7c6"/><path d="M546 866L1118 829L1202 855L624 897Z" fill="#839f98"/><path d="M546 866L1118 829L1131 834L560 872Z" fill="#385851"/>
+<path d="M607 877L1141 843M671 887L1167 851" stroke="#b8c9bb" opacity=".5"/>
+<!-- Mediterranean cypress and pines -->
+<path d="M305 832L314 511L322 832Z" fill="#5f6348"/><path d="M274 670Q280 480 315 403Q354 490 355 671Q352 735 315 754Q274 732 274 670Z" fill="#4a5941"/><path d="M305 437Q326 534 324 710Q310 736 306 730Z" fill="#637455"/>
+<path d="M1381 807L1400 632L1410 807Z" fill="#646446"/><path d="M1327 639Q1321 584 1370 574Q1405 534 1453 576Q1506 576 1497 634Q1462 665 1420 651Q1367 680 1327 639Z" fill="#5b6c4d"/>
+<path d="M152 903Q148 859 193 849Q224 822 262 857Q306 858 312 894Z" fill="#687455"/><path d="M1238 917Q1240 878 1282 876Q1320 848 1359 878Q1410 866 1421 905Z" fill="#616f50"/>
+</g>
+<rect x="129" y="336" width="149" height="37" fill="#f1efe6" fill-opacity=".9"/><text x="146" y="359" fill="#3b4637" font-family="Arial,sans-serif" font-size="11" letter-spacing="1.8">VILLA SILENZIO / 01</text>
+<circle cx="1420" cy="850" r="36" fill="#f1efe6"/><path d="M1405 865L1434 836M1410 836H1434V860" stroke="#38442f" stroke-width="1.5"/>
+<g font-family="Arial,sans-serif" fill="#49503f" font-size="11" letter-spacing="1.6"><text x="104" y="989">A DIALOGUE BETWEEN NATURE AND FORM.</text><text x="1230" y="989">DISCOVER OUR PRACTICE ↗</text></g>
+</g>
+</svg>
