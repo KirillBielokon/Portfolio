@@ -2,6 +2,8 @@
 
 ## Stato attuale
 
+Il redesign **Studio02** è stato caricato nel commit build `24de4f046eb5ade255fb2317954965b4cecc82b2`. [GitHubPagesrun#6](https://github.com/KirillBielokon/Portfolio/actions/runs/40594628132) conferma **SUCCESS** e destinazione **https://kirillbielokon.com/**. La verifica del deployment non equivale a un test funzionale diretto sul dominio; i test sono stati eseguiti sulla build locale.
+
 **L’utente ha confermato che il sito funziona sul dominio.** La migrazione a GitHub Pages è completata dal suo punto di vista. Le sezioni successive conservano lo storico diagnostico: non ripetere cambi DNS, richieste di chiavi IONOS o rimozioni del custom domain per un aggiornamento del sito. Il redesign successivo viene caricato nel ramo `gh-pages`, mantenendo dominio e impostazioni HTTPS.
 
 ## Stato verificato dopo le modifiche dell’utente

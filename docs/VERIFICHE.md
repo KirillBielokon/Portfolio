@@ -19,4 +19,4 @@ Redesign successivo alla conferma dell’utente che il dominio pubblico funziona
 
 Il laboratorio sospende l’animazione fuori schermo e a scheda nascosta, supporta una pausa esplicita e la preferenza di movimento ridotto. La regia di scroll usa un driver nativo con misure memorizzate: durante lo scroll non vengono richiesti nuovi calcoli di layout. I contenuti restano visibili anche scorrendo velocemente. Il carattere dei titoli è locale e precaricato.
 
-I risultati di Lighthouse sono misure di laboratorio sulla build locale, non dati dei visitatori reali. Audit finale mobile isolato, sulla build `index-D8RTiwBZ.js`: **prestazioni95, accessibilità100, bestpractice100, SEO100**. FCP/LCP0,8s; TBT250ms; CLS0; SpeedIndex1,2s. Le scene e il canvas sono attivi durante la misura.
+I risultati di Lighthouse sono misure di laboratorio sulla build locale, non dati dei visitatori reali. Audit finale mobile isolato, sulla build `index-D8RTiwBZ.js`: **prestazioni 95, accessibilità 100, best practice 100, SEO 100**. FCP/LCP 0,8 s; TBT 250 ms; CLS 0; Speed Index 1,2 s. Le scene e il canvas sono attivi durante la misura.
