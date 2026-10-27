@@ -1,5 +1,11 @@
 # Pubblicazione su kirillbielokon.com
 
+## Stato verificato dopo le modifiche dell’utente
+
+GitHub conferma la pubblicazione riuscita del commit della build `8859e50` nel [deployment Pages #1](https://github.com/KirillBielokon/Portfolio/actions/runs/40536623125), ramo `gh-pages`. L’URL dell’ambiente è `http://kirillbielokon.com/`. Questo è un riscontro di pubblicazione dell’hosting, non una verifica diretta di DNS o HTTPS.
+
+L’utente ha dichiarato di aver completato la configurazione Pages e i record IONOS indicati. Non ripetere né sovrascrivere DNS senza leggerne prima lo stato attuale. Le richieste al dominio e all’API GitHub dall’ambiente continuano a essere respinte dal proxy con HTTP 403 sul tunnel, quindi la propagazione e il certificato non sono stati verificati direttamente. È stato chiesto all’utente cosa vede aprendo `https://kirillbielokon.com` in una finestra privata. Verificare anche **Enforce HTTPS** quando il certificato è disponibile.
+
 Il dominio è registrato su IONOS. Lo screenshot DNS fornito successivamente dall’utente mostra un collegamento già configurato a **ChatGPT Sites**: `www` punta a `custom-domains.chatgpt.site`, con record di verifica OpenAI/Cloudflare. Il contenuto pubblico non è stato verificato dall’ambiente: le richieste sono ancora bloccate dal proxy. I DNS attuali non sono stati modificati.
 
 Il redesign è stato preparato nel repository, non nell’editor Sites. La sessione non espone strumenti per aggiornare o pubblicare il progetto Sites. **GitHub Pages è una destinazione alternativa già predisposta**, non un hosting mancante da acquistare. Aggiornare il progetto Sites originale consentirebbe di mantenere i DNS attuali; per usare la build GitHub occorre invece completare la migrazione dei soli record web dopo aver attivato Pages.
