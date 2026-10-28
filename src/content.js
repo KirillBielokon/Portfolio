@@ -14,14 +14,14 @@ export const projects = [
     category: "Architettura & spazi",
     tags: ["Art direction", "Web design"],
     image: "/images/forma-concept.svg",
-    color: "#deded2",
+    color: "#d7dce4",
     intro: "Una casa per i progetti.",
     description:
       "Un concept web per uno studio di architettura immaginario. Ho lavorato su una homepage che presenta subito uno spazio, poi invita a esplorare il lavoro dello studio. Pochi elementi, proporzioni precise e colori presi dai materiali.",
     challenge:
       "Chi visita il sito di un architetto deve poterne leggere il gusto già dal primo progetto. La sfida era dare spazio alle immagini e rendere immediati l’accesso ai lavori, la presentazione dello studio e il contatto.",
     approach:
-      "Una griglia orizzontale, un progetto in apertura e una navigazione ridotta all’essenziale. Avorio, verde oliva e titoli serif riprendono il carattere della villa illustrata. Ogni elemento dell’interfaccia lascia respiro al progetto.",
+      "Una griglia orizzontale, un progetto in apertura e una navigazione ridotta all’essenziale. Avorio, grafite e titoli serif riprendono i toni dell’immagine della villa. Ogni elemento dell’interfaccia lascia respiro al progetto.",
     deliverables: [
       "Direzione visiva",
       "Sistema tipografico",
@@ -59,14 +59,14 @@ export const projects = [
     tags: ["Social media", "Content design"],
     image: "/images/campo-social.svg",
     secondaryImage: "/images/campo-concept.svg",
-    color: "#dce6ab",
+    color: "#e7cdaa",
     intro: "Tre rubriche. Una torrefazione.",
     description:
       "Un concept social per una torrefazione immaginaria. Ho costruito tre esempi di contenuto: un nuovo caffè, un piccolo approfondimento e un invito a passare in negozio. Il sito coordinato estende lo stesso linguaggio fuori dal feed.",
     challenge:
       "Un profilo fatto soltanto di confezioni rischia di esaurire presto quello che ha da dire. Serviva una struttura per parlare di prodotto, condividere la cultura del caffè e dare un motivo per visitare il locale.",
     approach:
-      "Tre rubriche con ruoli distinti e una famiglia di layout comune. Verde bosco, lime e titoli grandi rendono riconoscibili i post; illustrazioni e soggetti cambiano con il contenuto. Non è una campagna pubblicata e non le attribuisco risultati o metriche.",
+      "Tre rubriche con ruoli distinti e una famiglia di layout comune. Espresso, crema e titoli grandi rendono riconoscibili i post; illustrazioni e soggetti cambiano con il contenuto. Non è una campagna pubblicata e non le attribuisco risultati o metriche.",
     deliverables: [
       "Direzione social",
       "Tre rubriche editoriali",

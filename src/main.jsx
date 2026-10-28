@@ -1,820 +1,610 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   ArrowUpRight,
   ArrowDown,
-  ArrowRight,
-  Plus,
-  Minus,
-  X,
+  ArrowUp,
   Menu,
+  X,
   Pause,
   Play,
-  MessageCircle,
-  MoveUpRight,
   Check,
+  Globe2,
+  Layers3,
+  MousePointer2,
+  MessageCircle,
+  Code2,
+  Palette,
+  Compass,
+  PackageCheck,
+  Plus,
+  LockKeyhole,
 } from "lucide-react";
 import "@fontsource-variable/dm-sans";
-import "@fontsource/ibm-plex-mono/latin-400.css";
-import "./styles.css";
-import Playground from "./Playground";
-import useScrollScene from "./useScrollScene";
+import "@fontsource-variable/sora";
+import HeroScene from "./HeroScene";
+import OrbitScene from "./OrbitScene";
+import ProofLab from "./ProofLab";
 import { ProjectModal, ContactModal } from "./Dialogs";
-import { profile, projects, services, faqs } from "./content";
+import { projects } from "./content";
+import "./styles.css";
 
-const whatsappUrl = `https://wa.me/${profile.whatsappNumber}?text=${encodeURIComponent("Ciao Kirill! Ho visto il tuo portfolio e vorrei parlarti del mio progetto.")}`;
-
-function useMedia(query) {
-  const [matches, setMatches] = useState(
-    () => window.matchMedia(query).matches,
+const WHATSAPP =
+  "https://wa.me/393896322180?text=" +
+  encodeURIComponent(
+    "Ciao Kirill! Ho visto il tuo portfolio e vorrei parlarti della mia attività.",
   );
-  useEffect(() => {
-    const media = window.matchMedia(query);
-    const update = () => setMatches(media.matches);
-    media.addEventListener("change", update);
-    update();
-    return () => media.removeEventListener("change", update);
-  }, [query]);
-  return matches;
-}
+const NAV = [
+  ["competenze", "Laboratorio"],
+  ["progetti", "Progetti"],
+  ["approccio", "Chi sono"],
+  ["servizi", "Servizi"],
+];
+const PROJECTS = [
+  {
+    name: "Forma Studio",
+    category: "Architettura, con spazio per respirare.",
+    description:
+      "Un sito editoriale per uno studio di architettura immaginario. Fotografie protagoniste, tipografia essenziale e un percorso semplice verso il contatto.",
+    tags: ["Web design", "Sviluppo web"],
+    url: "forma.studio / concept",
+  },
+  {
+    name: "Aether",
+    category: "La cura, anche nei dettagli.",
+    description:
+      "Uno studio di identità digitale per un brand skincare immaginario. Una direzione calda e sensoriale, dal prodotto alla sua presentazione online.",
+    tags: ["Direzione visiva", "Web design"],
+    url: "aether.skin / concept",
+  },
+  {
+    name: "Campo",
+    category: "Un’identità che vive anche nel feed.",
+    description:
+      "Un sistema di contenuti per un caffè immaginario. Grafiche, tono di voce e sito seguono la stessa direzione, mantenendo riconoscibile il brand.",
+    tags: ["Social media", "Identità digitale"],
+    url: "campo.cafe / concept",
+  },
+];
+const SERVICES = [
+  {
+    icon: Code2,
+    title: "Siti web.",
+    text: "Il tuo spazio online, progettato intorno a quello che fai e alle persone che vuoi raggiungere.",
+    items: [
+      "Struttura e design su misura",
+      "Sviluppo responsive",
+      "Animazioni e interazioni",
+      "Pubblicazione e controllo finale",
+    ],
+    type: "Sito web",
+  },
+  {
+    icon: Layers3,
+    title: "Social media.",
+    text: "Una presenza riconoscibile e contenuti con una direzione, prima ancora di premere pubblica.",
+    items: [
+      "Direzione visiva e tono di voce",
+      "Piano editoriale",
+      "Grafiche e copy",
+      "Organizzazione dei contenuti",
+    ],
+    type: "Gestione social",
+  },
+  {
+    icon: Compass,
+    title: "Una sola direzione.",
+    text: "Sito e social che parlano la stessa lingua. Per dare coerenza a ogni punto di contatto.",
+    items: [
+      "Identità digitale coordinata",
+      "Sito e contenuti social",
+      "Stile visivo condiviso",
+      "Un unico interlocutore",
+    ],
+    type: "Sito + social",
+  },
+];
+const FAQ = [
+  [
+    "Come inizia un progetto?",
+    "Con una conversazione. Mi racconti la tua attività, cosa ti serve e quali obiettivi hai. Poi preparo una proposta con attività, tempi e costi: il lavoro parte dopo aver concordato questi punti.",
+  ],
+  [
+    "Puoi riprogettare il mio sito attuale?",
+    "Sì. Partiamo da ciò che funziona e da ciò che vuoi migliorare: struttura, aspetto, esperienza da telefono e percorso verso il contatto. Ti propongo gli interventi adatti al tuo caso.",
+  ],
+  [
+    "Quanto costa e quanto tempo serve?",
+    "Dipende dalle pagine, dai contenuti e dalle funzionalità. Dopo il primo confronto ricevi una proposta con un preventivo e un calendario. Nessun prezzo generico prima di capire il progetto.",
+  ],
+  [
+    "Puoi seguire sia il sito sia i social?",
+    "Sì. Posso lavorare sul sito, sui social o su entrambi, con una direzione visiva e un tono di voce coordinati. Definiamo insieme attività, materiali e frequenza dei contenuti.",
+  ],
+  [
+    "E dopo la pubblicazione?",
+    "La consegna comprende un controllo finale e le indicazioni per usare ciò che abbiamo creato. Eventuali aggiornamenti e supporto continuativo si concordano nella proposta, in base alle tue esigenze.",
+  ],
+];
 
-function Monogram({ className = "" }) {
+function Mark({ id }) {
   return (
-    <svg
-      className={className}
-      viewBox="0 0 50 50"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M5 5v40h11V29l16 16h14L24 23 44 5H30L16 18V5H5Z"
-        fill="currentColor"
-      />
-      <path d="M36 5h9v9" stroke="currentColor" strokeWidth="2" />
+    <svg viewBox="0 0 80 100" aria-hidden="true">
+      {id && (
+        <defs>
+          <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
+            <stop stopColor="#b9d8ff" />
+            <stop offset=".5" stopColor="#7490ff" />
+            <stop offset="1" stopColor="#b283ff" />
+          </linearGradient>
+        </defs>
+      )}
+      <path d="M4 4h20v36L52 4h24L42 48l36 48H53L24 57v39H4z" />
     </svg>
   );
 }
-
 function Logo() {
   return (
     <a
-      className="logo"
       href="#inizio"
+      className="logo"
       aria-label="Kirill Bielokon, torna all’inizio"
     >
-      <Monogram />
-      <span>
+      <span className="logo-mark">
+        <Mark />
+      </span>
+      <span className="logo-name">
         kirill
         <br />
-        <b>
-          bielokon
-          <span className="logo-pixel" aria-hidden="true" />
-        </b>
+        bielokon.
       </span>
     </a>
   );
 }
-
 function Header({ onContact }) {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [active, setActive] = useState("");
-  const headerRef = useRef(null);
-  const toggleRef = useRef(null);
+  const [open, setOpen] = useState(false);
+  const toggle = useRef(null);
+  const panel = useRef(null);
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 30);
-      const total = document.documentElement.scrollHeight - innerHeight;
-      document.documentElement.style.setProperty(
-        "--page-progress",
-        total > 0 ? window.scrollY / total : 0,
-      );
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    const observer = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive(e.target.id);
-        }),
-      { rootMargin: "-10% 0px -55% 0px" },
-    );
-    ["progetti", "approccio", "servizi"].forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-    const media = matchMedia("(min-width: 761px)");
-    const resize = () => {
-      if (media.matches) setMenuOpen(false);
-    };
-    media.addEventListener("change", resize);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      observer.disconnect();
-      media.removeEventListener("change", resize);
-    };
-  }, []);
-  useEffect(() => {
-    if (!menuOpen) return;
-    const previous = document.body.style.overflow;
+    if (!open) return;
+    const old = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    const background = [
-      document.querySelector("main"),
-      document.querySelector("footer"),
-    ].filter(Boolean);
-    background.forEach((el) => (el.inert = true));
-    const frame = requestAnimationFrame(() =>
-      headerRef.current?.querySelector(".mobile-nav a")?.focus(),
-    );
-    const keys = (e) => {
+    const main = document.querySelector("main"),
+      footer = document.querySelector("footer");
+    if (main) main.inert = true;
+    if (footer) footer.inert = true;
+    const key = (e) => {
       if (e.key === "Escape") {
-        e.preventDefault();
-        setMenuOpen(false);
+        setOpen(false);
+        toggle.current?.focus();
       }
       if (e.key === "Tab") {
-        const items = [
-          ...headerRef.current.querySelectorAll(
-            "a[href],button:not([disabled])",
-          ),
-        ].filter((el) => el.getClientRects().length);
-        if (e.shiftKey && document.activeElement === items[0]) {
+        const nodes = [
+          toggle.current,
+          ...panel.current.querySelectorAll("a,button"),
+        ].filter(Boolean);
+        const first = nodes[0],
+          last = nodes[nodes.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
           e.preventDefault();
-          items.at(-1).focus();
-        } else if (!e.shiftKey && document.activeElement === items.at(-1)) {
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
           e.preventDefault();
-          items[0].focus();
+          first.focus();
         }
       }
     };
-    window.addEventListener("keydown", keys);
-    return () => {
-      cancelAnimationFrame(frame);
-      background.forEach((el) => (el.inert = false));
-      document.body.style.overflow = previous;
-      window.removeEventListener("keydown", keys);
-      if (!document.activeElement?.closest("dialog[open]"))
-        toggleRef.current?.focus({ preventScroll: true });
+    const mq = window.matchMedia("(min-width:801px)");
+    const resize = () => {
+      if (mq.matches) setOpen(false);
     };
-  }, [menuOpen]);
-  const contact = () => {
-    setMenuOpen(false);
-    onContact();
-  };
+    document.addEventListener("keydown", key);
+    mq.addEventListener("change", resize);
+    panel.current?.querySelector("a")?.focus();
+    return () => {
+      document.body.style.overflow = old;
+      if (main) main.inert = false;
+      if (footer) footer.inert = false;
+      document.removeEventListener("keydown", key);
+      mq.removeEventListener("change", resize);
+    };
+  }, [open]);
   return (
-    <header
-      ref={headerRef}
-      className={`header ${scrolled ? "is-scrolled" : ""}`}
-    >
-      <div className="header-inner container">
+    <header className="site-header">
+      <div className="shell header-inner">
         <Logo />
-        <nav className="desktop-nav" aria-label="Navigazione principale">
-          {[
-            ["progetti", "Lavori", "03"],
-            ["approccio", "Io, in breve", ""],
-            ["servizi", "Cosa faccio", ""],
-          ].map(([id, label, count]) => (
-            <a
-              key={id}
-              className={active === id ? "active" : ""}
-              href={`#${id}`}
-            >
+        <nav className="header-nav" aria-label="Navigazione principale">
+          {NAV.map(([id, label]) => (
+            <a href={"#" + id} key={id}>
               {label}
-              {count && <sup>{count}</sup>}
             </a>
           ))}
         </nav>
-        <button className="header-contact" onClick={contact}>
-          Parliamone <ArrowUpRight size={18} />
+        <button
+          className="button button-primary header-contact"
+          onClick={() => onContact()}
+        >
+          Parliamone <ArrowUpRight />
         </button>
         <button
-          ref={toggleRef}
+          ref={toggle}
           className="menu-toggle"
-          aria-label={menuOpen ? "Chiudi menu" : "Apri menu"}
-          aria-expanded={menuOpen}
-          aria-controls="mobile-navigation"
-          onClick={() => setMenuOpen(!menuOpen)}
+          onClick={() => setOpen(!open)}
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+          aria-label={open ? "Chiudi menu" : "Apri menu"}
         >
-          {menuOpen ? <X /> : <Menu />}
+          {open ? <X /> : <Menu />}
         </button>
       </div>
-      {menuOpen && (
-        <nav
-          id="mobile-navigation"
-          className="mobile-nav"
-          aria-label="Navigazione mobile"
+      <nav
+        ref={panel}
+        id="mobile-menu"
+        className={"mobile-menu" + (open ? " is-open" : "")}
+        aria-label="Navigazione mobile"
+        hidden={!open}
+      >
+        {NAV.map(([id, label]) => (
+          <a key={id} href={"#" + id} onClick={() => setOpen(false)}>
+            {label} <span aria-hidden="true">↗</span>
+          </a>
+        ))}
+        <button
+          className="button button-primary"
+          onClick={() => {
+            setOpen(false);
+            onContact();
+          }}
         >
-          {[
-            ["progetti", "I lavori"],
-            ["approccio", "Io, in breve"],
-            ["servizi", "Cosa faccio"],
-          ].map(([id, label], i) => (
-            <a href={`#${id}`} key={id} onClick={() => setMenuOpen(false)}>
-              <span>0{i + 1}</span>
-              {label}
-              <ArrowUpRight />
-            </a>
-          ))}
-          <button onClick={contact}>
-            Dimmi la tua. <ArrowUpRight />
-          </button>
-          <p>SITI WEB + SOCIAL MEDIA / KIRILL BIELOKON</p>
-        </nav>
-      )}
+          Parliamone <ArrowUpRight />
+        </button>
+      </nav>
     </header>
   );
 }
-
-function Hero({ onContact }) {
-  const [mode, setMode] = useState("signature");
-  const [paused, setPaused] = useState(false);
-  const ref = useRef(null);
-  const reduced = useMedia("(prefers-reduced-motion: reduce)");
-  const modeCopy = {
-    signature: [
-      "La mia firma.",
-      "Un’idea prende forma. Tocca o muovi il cursore.",
-    ],
-    web: [
-      "La tua casa online.",
-      "Dalla griglia a un sito: ogni elemento ha un posto.",
-    ],
-    social: [
-      "La tua voce, nel feed.",
-      "La stessa identità. Tre modi di raccontarla.",
-    ],
-  };
-  useScrollScene(ref, {
-    disabled: reduced,
-    range: (top, height) => [top, top + height],
-    onProgress: (p) => ref.current?.style.setProperty("--hero-scroll", p),
-  });
-  const tilt = (e) => {
-    if (reduced || e.pointerType === "touch") return;
-    const r = e.currentTarget.getBoundingClientRect();
-    e.currentTarget.style.setProperty(
-      "--tilt-x",
-      `${((e.clientY - r.top) / r.height - 0.5) * -8}deg`,
-    );
-    e.currentTarget.style.setProperty(
-      "--tilt-y",
-      `${((e.clientX - r.left) / r.width - 0.5) * 8}deg`,
-    );
-  };
-  const untilt = (e) => {
-    e.currentTarget.style.setProperty("--tilt-x", "0deg");
-    e.currentTarget.style.setProperty("--tilt-y", "0deg");
-  };
+function Ambient() {
+  return (
+    <div className="ambient" aria-hidden="true">
+      <i className="ambient-orb" />
+      <i className="ambient-orb" />
+      <i className="ambient-orb" />
+    </div>
+  );
+}
+function Hero({ paused, onPause }) {
+  const hero = useRef(null);
+  useEffect(() => {
+    const mq = matchMedia("(prefers-reduced-motion: reduce)");
+    if (mq.matches) return;
+    let raf = 0;
+    let size = window.innerHeight;
+    const draw = () => {
+      raf = 0;
+      hero.current?.style.setProperty(
+        "--hero-scroll",
+        String(Math.min(window.scrollY / size, 1)),
+      );
+    };
+    const scroll = () => {
+      if (!raf) raf = requestAnimationFrame(draw);
+    };
+    const resize = () => {
+      size = window.innerHeight;
+      scroll();
+    };
+    window.addEventListener("scroll", scroll, { passive: true });
+    window.addEventListener("resize", resize);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", scroll);
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
   return (
     <section
+      ref={hero}
       id="inizio"
-      className="hero container"
-      ref={ref}
+      className="hero shell"
       aria-labelledby="hero-title"
     >
-      <div className="hero-topline">
-        <p className="eyebrow">
-          <span className="live-dot" /> SITI WEB + SOCIAL MEDIA
-        </p>
-        <span className="micro hero-top-note">
-          IL LABORATORIO DI KIRILL BIELOKON
-        </span>
-      </div>
       <div className="hero-main">
         <div className="hero-copy">
-          <h1 id="hero-title" className="hero-title">
-            <span className="word-mask">
-              <span className="hero-word">FATTI</span>
+          <p className="eyebrow hero-kicker">
+            Kirill Bielokon · Web & social design
+          </p>
+          <h1 id="hero-title" aria-label="La tua attività, in un’altra dimensione.">
+            <span className="title-line">
+              <span>La tua attività,</span>
             </span>
-            <span className="word-mask">
-              <span className="hero-word lime">
-                NOTARE<span className="hero-period">.</span>
-              </span>
+            <span className="title-line">
+              <span>in un’altra</span>
+            </span>
+            <span className="title-line">
+              <span className="gradient-text">dimensione.</span>
             </span>
           </h1>
-          <p className="hero-intro">
-            Un sito che ti rappresenta.
-            <br />
-            Social che hanno qualcosa da dire.
-            <br />
-            <span>Io sono Kirill. Metto insieme le due cose.</span>
+          <p className="hero-desc">
+            Siti web e contenuti social che danno forma alla tua identità. Li
+            progetto e li realizzo con cura, per farti presentare bene. Dal
+            primo sguardo all’ultimo dettaglio.
           </p>
           <div className="hero-actions">
             <a
-              className="button button-lime"
-              href={whatsappUrl}
+              className="button button-primary"
+              href={WHATSAPP}
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noreferrer"
             >
-              Parliamone su WhatsApp <ArrowUpRight size={20} />
+              Parliamo della tua idea <ArrowUpRight />
             </a>
-            <a href="#progetti" className="text-link">
-              Prima, guarda qui <ArrowDown size={17} />
+            <a
+              className="button button-glass hero-secondary"
+              href="#competenze"
+            >
+              Guarda cosa posso fare <ArrowDown />
             </a>
           </div>
         </div>
-        <div className={`playground-wrap mode-${mode}`}>
-          <div className="playground-tilt">
-            <div
-              className="playground-shell"
-              onPointerMove={tilt}
-              onPointerLeave={untilt}
-            >
-              <div className="playground-toolbar">
-                <span>
-                  <i /> CAMPO DI IDEE
-                </span>
-                <button
-                  aria-label={
-                    paused
-                      ? "Riprendi l’animazione"
-                      : "Metti in pausa l’animazione"
-                  }
-                  aria-pressed={paused}
-                  onClick={() => setPaused(!paused)}
-                >
-                  {paused ? <Play size={13} /> : <Pause size={13} />}
-                </button>
-              </div>
-              <div className="playground-surface">
-                <span className="plot-corner corner-tl" />
-                <span className="plot-corner corner-tr" />
-                <span className="plot-corner corner-bl" />
-                <span className="plot-corner corner-br" />
-                <Playground mode={mode} paused={paused} />
-              </div>
-              <div className="playground-caption" aria-live="polite">
-                <span>{modeCopy[mode][0]}</span>
-                <ArrowUpRight size={21} />
-              </div>
-            </div>
-            <div className="playground-footnote">
-              <span className="micro">UNA GRIGLIA. INFINITE POSSIBILITÀ.</span>
-              <span className="micro">K / B</span>
-            </div>
+        <div className="hero-art">
+          <HeroScene paused={paused} />
+          <div className="floating-tag tag-web" aria-hidden="true">
+            <Code2 />
+            <span>
+              Web design<small>Disegnato. Sviluppato. Curato.</small>
+            </span>
           </div>
-          <div
-            className="playground-switch"
-            role="group"
-            aria-label="Esplora il laboratorio digitale"
-          >
-            {[
-              ["signature", "01", "La firma"],
-              ["web", "02", "Web"],
-              ["social", "03", "Social"],
-            ].map(([id, n, label]) => (
-              <button
-                key={id}
-                aria-pressed={mode === id}
-                onClick={() => setMode(id)}
-              >
-                <span>{n}</span>
-                {label}
-              </button>
-            ))}
+          <div className="floating-tag tag-social" aria-hidden="true">
+            <Layers3 />
+            <span>
+              Social media<small>Un’identità che si riconosce.</small>
+            </span>
           </div>
-          <p className="playground-hint">{modeCopy[mode][1]}</p>
-          <span className="handwritten-note" aria-hidden="true">
-            Sì, puoi giocarci.
-            <svg viewBox="0 0 100 55">
-              <path
-                d="M4 40C25 60 72 35 83 9m-15 7 16-8 7 17"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-              />
-            </svg>
+          <span className="scene-caption" aria-hidden="true">
+            Una firma. Infinite possibilità.
           </span>
         </div>
       </div>
-      <div className="hero-meta">
-        <a href="#progetti" className="scroll-invite">
-          <span className="scroll-line" />
-          SCORRI. IL RESTO È QUI SOTTO.
-          <ArrowDown size={14} />
+      <div className="hero-bottom">
+        <div className="hero-promises">
+          <span>
+            <Check />
+            Un unico interlocutore
+          </span>
+          <span>
+            <Check />
+            Sito e social coordinati
+          </span>
+          <span>
+            <Check />
+            Proposta chiara prima di iniziare
+          </span>
+        </div>
+        <a className="scroll-cue" href="#competenze">
+          SCOPRI IL MIO MONDO <ArrowDown />
         </a>
-        <span className="micro">UN NOME. UN FILO DIRETTO.</span>
-      </div>
-    </section>
-  );
-}
-
-function Manifesto() {
-  const ref = useRef(null);
-  const reduced = useMedia("(prefers-reduced-motion: reduce)");
-  useScrollScene(ref, {
-    disabled: reduced,
-    range: (top, height, viewport) => [
-      top - viewport * 0.75,
-      top + height - viewport * 0.5,
-    ],
-    onProgress: (p) => ref.current?.style.setProperty("--reading-progress", p),
-  });
-
-  return (
-    <section className="manifesto" ref={ref} aria-labelledby="manifesto-title">
-      <div className="container manifesto-inner">
-        <div>
-          <span className="eyebrow">IL PUNTO È QUESTO</span>
-          <span className="manifesto-arrow" aria-hidden="true">
-            <ArrowUpRight strokeWidth={1} />
-          </span>
-        </div>
-        <h2 id="manifesto-title">
-          {"Online c’è già abbastanza rumore. Diamo una forma chiara a quello che fai."
-            .split(" ")
-            .map((w, i) => (
-              <span className="manifesto-word" style={{ "--word": i }} key={i}>
-                {w}{" "}
-              </span>
-            ))}
-        </h2>
-      </div>
-    </section>
-  );
-}
-
-function Marquee() {
-  const [paused, setPaused] = useState(false);
-  return (
-    <div className="marquee-bound">
-      <div
-        className="marquee"
-        role="region"
-        aria-label="Design, sviluppo, contenuti, identità"
-      >
-        <div
-          className={`marquee-track ${paused ? "is-paused" : ""}`}
-          aria-hidden="true"
-        >
-          {Array.from({ length: 4 }, (_, i) => (
-            <React.Fragment key={i}>
-              <span>BUONE IDEE</span>
-              <ArrowUpRight className="marquee-mark" strokeWidth={1.1} />
-              <span>FATTE BENE</span>
-              <ArrowUpRight className="marquee-mark" strokeWidth={1.1} />
-            </React.Fragment>
-          ))}
-        </div>
         <button
-          className="marquee-control"
-          aria-label={
-            paused ? "Riprendi lo scorrimento" : "Metti in pausa lo scorrimento"
-          }
+          className="motion-toggle"
+          onClick={onPause}
           aria-pressed={paused}
-          onClick={() => setPaused(!paused)}
         >
-          {paused ? <Play size={13} /> : <Pause size={13} />}
+          {paused ? <Play /> : <Pause />}
+          {paused ? "Riprendi animazioni" : "Pausa animazioni"}
         </button>
+      </div>
+    </section>
+  );
+}
+function depthEnter(e) {
+  if (
+    matchMedia("(prefers-reduced-motion: reduce), (pointer: coarse)").matches ||
+    document.documentElement.dataset.motion === "paused"
+  )
+    return;
+  e.currentTarget._depthBounds = e.currentTarget.getBoundingClientRect();
+}
+function depthMove(e) {
+  const node = e.currentTarget,
+    bounds = node._depthBounds;
+  if (!bounds || document.documentElement.dataset.motion === "paused") return;
+  const x = Math.min(1, Math.max(0, (e.clientX - bounds.left) / bounds.width)),
+    y = Math.min(1, Math.max(0, (e.clientY - bounds.top) / bounds.height));
+  node.style.setProperty("--tilt-x", (0.5 - y) * 8 + "deg");
+  node.style.setProperty("--tilt-y", (x - 0.5) * 9 + "deg");
+  node.style.setProperty("--shine-x", x * 100 + "%");
+  node.style.setProperty("--shine-y", y * 100 + "%");
+}
+function depthLeave(e) {
+  const node = e.currentTarget;
+  node._depthBounds = null;
+  node.style.setProperty("--tilt-x", "0deg");
+  node.style.setProperty("--tilt-y", "0deg");
+}
+function Work({ onProject }) {
+  return (
+    <section className="work shell" id="progetti" aria-labelledby="work-title">
+      <div className="section-intro reveal" data-reveal>
+        <div>
+          <p className="eyebrow">Progetti selezionati · Studi personali</p>
+          <h2 id="work-title" className="section-title">
+            Tre direzioni.
+            <br />
+            <span className="gradient-text">Progettate da zero.</span>
+          </h2>
+        </div>
+        <p>
+          Brand immaginari, scelte concrete. Tre concept per mostrarti come
+          traduco un’idea in un’esperienza digitale.
+        </p>
+      </div>
+      <div className="project-list">
+        {PROJECTS.map((item, i) => (
+          <article className="project-card reveal" data-reveal key={item.name}>
+            <button
+              className="project-image"
+              onPointerEnter={depthEnter}
+              onPointerMove={depthMove}
+              onPointerLeave={depthLeave}
+              aria-label={"Esplora " + item.name + ", studio di design"}
+              onClick={() => onProject(projects[i])}
+            >
+              <span className="browser-bar" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+                <span>{item.url}</span>
+                <LockKeyhole />
+              </span>
+              <img
+                src={projects[i].image}
+                alt={"Anteprima del concept " + item.name}
+                width="1600"
+                height="1100"
+                loading="lazy"
+                decoding="async"
+              />
+              <span className="project-open" aria-hidden="true">
+                <ArrowUpRight />
+              </span>
+            </button>
+            <div className="project-info">
+              <span className="project-number">0{i + 1} / CONCEPT</span>
+              <h3>{item.name}</h3>
+              <p>{item.description}</p>
+              <div className="project-tags">
+                {item.tags.map((tag) => (
+                  <span key={tag}>{tag}</span>
+                ))}
+              </div>
+              <button
+                className="text-link"
+                onClick={() => onProject(projects[i])}
+              >
+                Dentro al progetto <ArrowUpRight />
+              </button>
+              <br />
+              <span className="concept-label">
+                Studio personale · Brand immaginario
+              </span>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p className="work-disclosure">
+        Questi progetti sono concept dimostrativi, non lavori commissionati da
+        clienti. Li ho sviluppati per esplorare identità, interfacce e
+        contenuti: nelle schede trovi il ragionamento dietro ogni scelta.
+      </p>
+    </section>
+  );
+}
+function CapabilityRail() {
+  const words = [
+    "Design che si riconosce",
+    "Sviluppo su misura",
+    "Contenuti con una direzione",
+    "Cura in ogni dettaglio",
+  ];
+  return (
+    <div className="capability-rail" aria-hidden="true">
+      <div className="rail-track">
+        {[...words, ...words].map((word, i) => (
+          <React.Fragment key={i}>
+            <span>{word}</span>
+            <i>
+              <svg
+                viewBox="0 0 24 24"
+                width="22"
+                height="22"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M12 2v20M2 12h20M5 5l14 14M5 19 19 5"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                />
+              </svg>
+            </i>
+          </React.Fragment>
+        ))}
       </div>
     </div>
   );
 }
-
-function ProjectVisual({ project, onOpen, active = true }) {
-  return (
-    <button
-      className="project-visual"
-      style={{ background: project.color }}
-      aria-label={`Esplora ${project.name}, studio di design`}
-      onClick={() => onOpen(project)}
-      tabIndex={active ? 0 : -1}
-    >
-      <span className="project-screen-label">
-        <span />
-        CONCEPT / {project.number}
-      </span>
-      <img
-        src={project.image}
-        width="1600"
-        height="1100"
-        loading="lazy"
-        alt={`Concept ${project.name}: ${project.category.toLowerCase()}`}
-      />
-      <span className="project-explore">
-        DENTRO IL PROGETTO <ArrowUpRight size={18} />
-      </span>
-    </button>
-  );
-}
-
-function Work({ onProject }) {
-  const [active, setActive] = useState(0);
-  const desktop = useMedia("(min-width: 1000px)");
-  const reduced = useMedia("(prefers-reduced-motion: reduce)");
-  const storyRef = useRef(null);
-  useScrollScene(storyRef, {
-    disabled: !desktop,
-    range: (top, height, viewport) => [top - 84, top + height - viewport + 30],
-    onProgress: (p) => setActive(Math.min(2, Math.floor(p * 3))),
-  });
-  const choose = (i) => {
-    if (!storyRef.current) return;
-    const r = storyRef.current.getBoundingClientRect();
-    const top = r.top + window.scrollY - 84;
-    const distance = storyRef.current.offsetHeight - window.innerHeight + 114;
-    setActive(i);
-    window.scrollTo({
-      top: top + distance * ((i + 0.5) / 3),
-      behavior: "instant",
-    });
-  };
-  return (
-    <section id="progetti" className="work" aria-labelledby="work-title">
-      <div className="container work-heading">
-        <div className="section-kicker">
-          <span className="eyebrow">01 / IDEE MESSE ALLA PROVA</span>
-          <span className="micro">
-            STUDI INDIPENDENTI / WEB + SOCIAL.
-          </span>
-        </div>
-        <div className="work-heading-main">
-          <h2 id="work-title" className="display">
-            LE IDEE
-            <br />
-            SI VEDONO.
-          </h2>
-          <p>
-            Tre brand immaginari, tre direzioni precise.
-            <br />
-            Ti mostro come ragiono, cosa scelgo
-            <br />e dove voglio portare un progetto.
-          </p>
-          <span className="large-arrow" aria-hidden="true">
-            <ArrowUpRight strokeWidth={1} />
-          </span>
-        </div>
-      </div>
-      {desktop ? (
-        <div className="work-story" ref={storyRef}>
-          <div className="work-stage container">
-            <aside className="work-index">
-              <span className="micro">SFOGLIA / SCORRI</span>
-              <div className="work-index-links">
-                {projects.map((p, i) => (
-                  <button
-                    key={p.id}
-                    className={i === active ? "selected" : ""}
-                    aria-pressed={i === active}
-                    aria-label={`Mostra ${p.name}`}
-                    onClick={() => choose(i)}
-                  >
-                    <span>0{i + 1}</span>
-                    <b>{p.name}</b>
-                    <ArrowUpRight size={18} />
-                  </button>
-                ))}
-              </div>
-              <div className="work-active-note" key={active}>
-                <span className="eyebrow">{projects[active].category}</span>
-                <p>{projects[active].intro}</p>
-                <div className="project-tags">
-                  {projects[active].tags.map((t) => (
-                    <span key={t}>{t}</span>
-                  ))}
-                </div>
-                <button
-                  className="text-link"
-                  onClick={() => onProject(projects[active])}
-                >
-                  Le scelte, da vicino <ArrowUpRight size={16} />
-                </button>
-              </div>
-              <div className="work-counter">
-                <span>0{active + 1}</span>
-                <i>/ 03</i>
-              </div>
-            </aside>
-            <div className="work-artboard">
-              {projects.map((p, i) => (
-                <article
-                  className={`project work-slide ${i === active ? "is-active" : ""}`}
-                  key={p.id}
-                  aria-hidden={i !== active}
-                  inert={i !== active}
-                >
-                  <ProjectVisual
-                    project={p}
-                    onOpen={onProject}
-                    active={i === active}
-                  />
-                  <div className="project-bottom">
-                    <h3>{p.name}</h3>
-                    <span className="micro">{p.category}</span>
-                    <span className="micro">0{i + 1} / 03</span>
-                  </div>
-                </article>
-              ))}
-            </div>
-            <span className="work-scroll-line" aria-hidden="true">
-              <i style={{ transform: `scaleY(${(active + 1) / 3})` }} />
-            </span>
-          </div>
-        </div>
-      ) : (
-        <div className="container mobile-projects">
-          {projects.map((p) => (
-            <article className="project" key={p.id} data-reveal>
-              <div className="mobile-project-top">
-                <span className="micro">0{Number(p.number)} / 03</span>
-                <span className="micro">{p.category}</span>
-              </div>
-              <ProjectVisual project={p} onOpen={onProject} />
-              <div className="project-bottom">
-                <h3>{p.name}</h3>
-                <button className="text-link" onClick={() => onProject(p)}>
-                  Esplora <ArrowUpRight size={16} />
-                </button>
-              </div>
-              <p className="mobile-project-intro">{p.intro}</p>
-            </article>
-          ))}
-        </div>
-      )}
-      <div className="work-end container">
-        <span className="micro">
-          I CONCEPT SONO STUDI PERSONALI, NON INCARICHI CLIENTE.
-        </span>
-        <span className="micro">APPUNTI, SCELTE, PROGETTI.</span>
-      </div>
-    </section>
-  );
-}
-
-function About({ onContact }) {
-  const ref = useRef(null);
-  const reduced = useMedia("(prefers-reduced-motion: reduce)");
-  useScrollScene(ref, {
-    disabled: reduced,
-    range: (top, height, viewport) => [top - viewport, top + height],
-    onProgress: (p) => {
-      ref.current?.style.setProperty("--about-scroll", p);
-      if (p > 0.15) ref.current?.classList.add("is-in-view");
-    },
-  });
-
+function About() {
   return (
     <section
+      className="about shell"
       id="approccio"
-      className="about"
-      ref={ref}
       aria-labelledby="about-title"
     >
-      <div className="container">
-        <div className="section-kicker">
-          <span className="eyebrow">02 / DIETRO LE COSE CHE VEDI</span>
-          <span className="micro">KIRILL BIELOKON. PIACERE.</span>
-        </div>
-        <div className="about-grid">
-          <div>
-            <h2 id="about-title" className="display">
-              <span className="about-line">
-                <span>UN NOME.</span>
-              </span>
-              <span className="about-line">
-                <span>UN FILO</span>
-              </span>
-              <span className="about-line">
-                <span>DIRETTO.</span>
-              </span>
-            </h2>
-            <div className="about-handwriting">
-              Ci sono io, dall’idea all’ultimo dettaglio.
+      <div className="about-grid">
+        <div
+          className="identity-card reveal"
+          data-reveal
+          onPointerEnter={depthEnter}
+          onPointerMove={depthMove}
+          onPointerLeave={depthLeave}
+        >
+          <span className="identity-corner">
+            CREATIVO PER SCELTA. CURIOSO DI NATURA.
+          </span>
+          <div className="identity-symbol" aria-hidden="true">
+            <div className="identity-depth">
+              <Mark />
+              <Mark />
+              <Mark />
+              <Mark />
+              <Mark id="identity-gradient" />
             </div>
           </div>
-          <div className="about-right">
-            <div className="about-print" aria-hidden="true">
-              <Monogram />
-              <span>PROGETTARE È SCEGLIERE.</span>
-              <span>KB / STUDIO INDIPENDENTE</span>
-            </div>
-            <div className="about-copy">
-              <p>
-                Sono Kirill. Mi piace mettere ordine nelle idee e trovare il
-                modo giusto di farle vedere.
-              </p>
-              <p>
-                Un sito che si capisce. Un profilo riconoscibile. Un messaggio
-                che arriva. Tengo insieme design, sviluppo e contenuti, perché
-                parlino la stessa lingua.
-              </p>
-              <button className="text-link" onClick={onContact}>
-                Partiamo dalla tua idea <ArrowUpRight size={18} />
-              </button>
-            </div>
-          </div>
+          <span className="identity-label">La persona dietro i pixel</span>
+          <h3>Kirill Bielokon.</h3>
+          <p>Web developer & social media designer.</p>
         </div>
-        <div className="about-principles">
-          <div>
-            <span>01</span>
-            <p>
-              Poche cose.
-              <br />
-              <b>Scelte con criterio.</b>
-            </p>
-          </div>
-          <div>
-            <span>02</span>
-            <p>
-              Una direzione.
-              <br />
-              <b>Su tutti i canali.</b>
-            </p>
-          </div>
-          <div>
-            <span>03</span>
-            <p>
-              Un confronto.
-              <br />
-              <b>Senza intermediari.</b>
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Services() {
-  const [expanded, setExpanded] = useState(0);
-  return (
-    <section id="servizi" className="services" aria-labelledby="services-title">
-      <div className="container">
-        <div className="section-kicker">
-          <span className="eyebrow">03 / COSA FACCIAMO, IN PRATICA</span>
-          <span className="micro">IL TUO PROGETTO, IL PERIMETRO GIUSTO.</span>
-        </div>
-        <div className="services-heading">
-          <h2 id="services-title" className="display">
-            DAL PRIMO
+        <div className="about-copy reveal" data-reveal>
+          <p className="eyebrow">Piacere, sono Kirill</p>
+          <h2 id="about-title" className="section-title">
+            Design che si vede.
             <br />
-            «E SE…»<span className="outline-word"> AL VIA.</span>
+            <span className="gradient-text">Metodo che si capisce.</span>
           </h2>
           <p>
-            Puoi partire da un sito, dai social
-            <br />o da una presenza tutta da costruire.
-            <br />
-            Decidiamo insieme da dove ha senso iniziare.
+            Mi piace quando un progetto ha carattere, ma anche quando ogni
+            dettaglio ha un motivo. Unisco sviluppo web e contenuti social per
+            costruire una presenza che ti rappresenti.
           </p>
-        </div>
-        <div className="service-list">
-          {services.map((s, i) => (
-            <div
-              className={`service-row ${expanded === i ? "expanded" : ""}`}
-              key={s.number}
-            >
-              <h3>
-                <button
-                  className="service-trigger"
-                  aria-expanded={expanded === i}
-                  aria-controls={`service-${i}`}
-                  onClick={() => setExpanded(expanded === i ? null : i)}
-                >
-                  <span className="service-number">{s.number}</span>
-                  <span className="service-title">{s.title}</span>
-                  <span className="service-tag">{s.tag}</span>
-                  <span className="service-toggle">
-                    {expanded === i ? <Minus /> : <Plus />}
-                  </span>
-                </button>
-              </h3>
-              <div
-                className="service-panel"
-                id={`service-${i}`}
-                hidden={expanded !== i}
-              >
-                <p>{s.text}</p>
-                <div className="service-pills">
-                  {s.details.map((d) => (
-                    <span key={d}>
-                      <Check size={12} />
-                      {d}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="process">
-          <span className="eyebrow">COME CI ARRIVIAMO</span>
-          <div className="process-steps">
+          <p>
+            Seguo il progetto dall’idea alla pubblicazione. Parli direttamente
+            con me: definiamo una direzione, ci confrontiamo sulle scelte e
+            mettiamo ordine in ciò che serve.
+          </p>
+          <div className="trust-list">
             {[
-              ["01", "Ti ascolto", "Il tuo mondo, le tue priorità."],
               [
-                "02",
-                "Diamo una direzione",
-                "Un’idea chiara, prima di produrre.",
+                Compass,
+                "Obiettivi chiari",
+                "Prima di partire, concordiamo attività, costi e calendario.",
               ],
-              ["03", "Si crea", "Design, codice, contenuti."],
-              ["04", "Si mette online", "Tutto pronto, fino al dettaglio."],
-            ].map(([n, t, d]) => (
-              <div key={n}>
-                <span>
-                  {n}
-                  <ArrowRight size={17} />
+              [
+                MessageCircle,
+                "Confronto diretto",
+                "Momenti di revisione concordati, con spazio per il tuo feedback.",
+              ],
+              [
+                PackageCheck,
+                "Consegna organizzata",
+                "File, accessi e indicazioni utili per usare ciò che abbiamo creato.",
+              ],
+            ].map(([Icon, title, text]) => (
+              <div className="trust-item" key={title}>
+                <span className="trust-icon">
+                  <Icon />
                 </span>
-                <h3>{t}</h3>
-                <p>{d}</p>
+                <div>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -823,168 +613,249 @@ function Services() {
     </section>
   );
 }
-
-function FAQ() {
-  const [open, setOpen] = useState(null);
+function Services({ onContact, paused }) {
   return (
-    <section className="faq container" aria-labelledby="faq-title">
-      <div>
-        <span className="eyebrow">DUE COSE, PRIMA DI INIZIARE.</span>
-        <h2 id="faq-title" className="display">
-          PARLIAMO
-          <br />
-          CHIARO.
-        </h2>
+    <section
+      className="services shell"
+      id="servizi"
+      aria-labelledby="services-title"
+    >
+      <div className="section-intro reveal" data-reveal>
+        <div>
+          <p className="eyebrow">Cosa possiamo creare</p>
+          <h2 id="services-title" className="section-title">
+            La presenza giusta.
+            <br />
+            <span className="gradient-text">In ogni formato.</span>
+          </h2>
+          <p className="services-description">
+            Un sito, i social o una direzione completa. Partiamo da quello che
+            serve davvero alla tua attività.
+          </p>
+        </div>
+        <OrbitScene paused={paused} />
       </div>
-      <div className="faq-list">
-        {faqs.map((f, i) => (
-          <div className="faq-item" key={f.q}>
-            <h3>
-              <button
-                aria-expanded={open === i}
-                aria-controls={`faq-${i}`}
-                onClick={() => setOpen(open === i ? null : i)}
-              >
-                {f.q}
-                {open === i ? <Minus size={18} /> : <Plus size={18} />}
-              </button>
-            </h3>
-            <div id={`faq-${i}`} hidden={open !== i}>
-              <p>{f.a}</p>
-            </div>
+      <div className="service-grid">
+        {SERVICES.map(({ icon: Icon, title, text, items, type }) => (
+          <article className="service-card reveal" data-reveal key={title}>
+            <span className="service-icon">
+              <Icon size={21} />
+            </span>
+            <h3>{title}</h3>
+            <p>{text}</p>
+            <ul>
+              {items.map((item) => (
+                <li key={item}>
+                  <Check />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <button className="text-link" onClick={() => onContact(type)}>
+              Parliamo del progetto <ArrowUpRight />
+            </button>
+          </article>
+        ))}
+      </div>
+      <div className="process">
+        {[
+          [
+            "Ti ascolto.",
+            "Attività, esigenze e obiettivi. Prima capiamo dove vuoi andare.",
+          ],
+          [
+            "Diamo una direzione.",
+            "Una proposta con stile, attività, tempi e costi definiti.",
+          ],
+          ["Si crea.", "Design e sviluppo, con revisioni concordate insieme."],
+          [
+            "Si mette online.",
+            "Controllo finale, pubblicazione e consegna organizzata.",
+          ],
+        ].map(([title, text], i) => (
+          <div className="process-step reveal" data-reveal key={title}>
+            <span>0{i + 1} —</span>
+            <h3>{title}</h3>
+            <p>{text}</p>
           </div>
         ))}
       </div>
     </section>
   );
 }
-
-function Contact({ onContact }) {
-  const ref = useRef(null);
-  const reduced = useMedia("(prefers-reduced-motion: reduce)");
-  useScrollScene(ref, {
-    disabled: reduced,
-    range: (top, height, viewport) => [
-      top - viewport,
-      top + height * 0.5 - viewport * 0.5,
-    ],
-    onProgress: (p) => ref.current?.style.setProperty("--contact-scroll", p),
-  });
-
+function Questions() {
+  const [open, setOpen] = useState(null);
   return (
-    <section
-      id="contatti"
-      className="contact-section"
-      aria-labelledby="contact-title"
-      ref={ref}
-    >
-      <div className="container">
-        <div className="section-kicker">
-          <span className="eyebrow">
-            <span className="live-dot" /> IL TUO PROGETTO INIZIA QUI.
-          </span>
-          <span className="micro">BASTA UN MESSAGGIO.</span>
-        </div>
-        <a
-          className="contact-big"
-          href={whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 id="contact-title" className="display">
-            <span className="contact-big-line">DIMMI</span>
-            <span className="contact-big-line">LA TUA.</span>
-          </h2>
-          <span className="contact-arrow">
-            <ArrowUpRight strokeWidth={1.1} />
-          </span>
-        </a>
-        <div className="contact-bottom">
-          <div>
-            <p>
-              Un nuovo sito? Social da ripensare?
-              <br />
-              Raccontami da dove parti.
-            </p>
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="whatsapp-inline"
-            >
-              <MessageCircle size={17} /> Scrivimi su WhatsApp{" "}
-              <ArrowUpRight size={17} />
-            </a>
-          </div>
-          <button className="brief-link" onClick={onContact}>
-            Preferisci mettere in ordine le idee?
+    <section className="faq shell" aria-labelledby="faq-title">
+      <div className="faq-grid">
+        <div className="faq-intro reveal" data-reveal>
+          <p className="eyebrow">Prima di scrivermi</p>
+          <h2 className="section-title" id="faq-title">
+            Qualche risposta,
             <br />
-            <span>
-              Prepara il tuo brief <ArrowUpRight size={16} />
-            </span>
-          </button>
+            <span className="gradient-text">senza giri di parole.</span>
+          </h2>
+          <p>
+            Per il resto, una conversazione è il modo migliore per capire se
+            possiamo lavorare bene insieme.
+          </p>
+        </div>
+        <div>
+          {FAQ.map(([q, a], i) => (
+            <div
+              className={"faq-item" + (open === i ? " is-open" : "")}
+              key={q}
+            >
+              <h3>
+                <button
+                  onClick={() => setOpen(open === i ? null : i)}
+                  aria-expanded={open === i}
+                  aria-controls={"faq-answer-" + i}
+                >
+                  {q}
+                  <Plus aria-hidden="true" />
+                </button>
+              </h3>
+              <div
+                id={"faq-answer-" + i}
+                className="faq-answer"
+                inert={open !== i}
+              >
+                <div>
+                  <p>{a}</p>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
   );
 }
-
+function Contact({ onContact }) {
+  return (
+    <section
+      className="contact shell"
+      id="contatti"
+      aria-labelledby="contact-title"
+    >
+      <div className="contact-panel reveal" data-reveal>
+        <div className="contact-orbital" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+          <span />
+        </div>
+        <div>
+          <p className="eyebrow">La prossima bella idea</p>
+          <h2 id="contact-title">
+            Raccontami cosa
+            <br />
+            vuoi far crescere.
+          </h2>
+          <p>
+            Partiamo dalla tua attività e da quello che ti serve. Ti ascolto e
+            capiamo insieme quale direzione prendere.
+          </p>
+        </div>
+        <div className="contact-actions">
+          <a
+            className="button"
+            href={WHATSAPP}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <MessageCircle />
+            Scrivimi su WhatsApp <ArrowUpRight />
+          </a>
+          <button className="text-link" onClick={() => onContact()}>
+            Preferisci mettere in ordine le idee? <ArrowUpRight />
+          </button>
+          <span>
+            Un primo confronto, senza impegno.
+            <br />
+            Parli direttamente con me.
+          </span>
+        </div>
+      </div>
+    </section>
+  );
+}
 function Footer() {
   return (
-    <footer className="footer">
-      <div className="container">
-        <div className="footer-top">
-          <a
-            href="#inizio"
-            aria-label="Kirill Bielokon, torna all’inizio"
-            className="footer-name"
-          >
-            KIRILL BIELOKON
-            <span>
-              <ArrowUpRight strokeWidth={1.1} />
-            </span>
-          </a>
-        </div>
-        <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} KIRILL BIELOKON</span>
-          <span>SITI WEB + SOCIAL MEDIA. UNA VOCE PROPRIA.</span>
-          <a href="#inizio">
-            TORNA SU <ArrowUpRight size={13} />
-          </a>
-        </div>
+    <footer className="footer shell">
+      <div className="footer-top">
+        <Logo />
+        <p>Un po’ di codice. Molta cura. La tua prossima direzione.</p>
+        <a className="back-top" href="#inizio" aria-label="Torna all’inizio">
+          <ArrowUp />
+        </a>
+      </div>
+      <div className="footer-bottom">
+        <span>
+          © {new Date().getFullYear()} Kirill Bielokon. Progettato e sviluppato
+          con cura.
+        </span>
+        <a href={WHATSAPP} target="_blank" rel="noreferrer">
+          Da un’idea a una conversazione ↗
+        </a>
       </div>
     </footer>
   );
 }
-
 function App() {
-  const [project, setProject] = useState(null);
-  const [contact, setContact] = useState(false);
-
+  const [project, setProject] = useState(null),
+    [contact, setContact] = useState(null),
+    [paused, setPaused] = useState(false);
+  useEffect(() => {
+    document.documentElement.dataset.motion = paused ? "paused" : "running";
+    return () => delete document.documentElement.dataset.motion;
+  }, [paused]);
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-seen");
+            io.unobserve(e.target);
+          }
+        }),
+      { threshold: 0.08 },
+    );
+    document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+  const openContact = (type = "") =>
+    setContact({ type: typeof type === "string" ? type : "" });
   return (
-    <>
-      <a className="skip-link" href="#main-content">
+    <div className="site-wrap">
+      <a className="skip-link" href="#contenuto">
         Vai al contenuto
       </a>
-      <Header onContact={() => setContact(true)} />
-      <main id="main-content">
-        <Hero onContact={() => setContact(true)} />
-        <Manifesto />
+      <Ambient />
+      <Header onContact={openContact} />
+      <main id="contenuto">
+        <Hero paused={paused} onPause={() => setPaused(!paused)} />
+        <ProofLab onContact={openContact} />
         <Work onProject={setProject} />
-        <Marquee />
-        <About onContact={() => setContact(true)} />
-        <Services />
-        <FAQ />
-        <Contact onContact={() => setContact(true)} />
+        <CapabilityRail />
+        <About />
+        <Services onContact={openContact} paused={paused} />
+        <Questions />
+        <Contact onContact={openContact} />
       </main>
       <Footer />
       <ProjectModal
         project={project}
         onClose={() => setProject(null)}
-        onContact={() => setContact(true)}
+        onContact={openContact}
       />
-      <ContactModal open={contact} onClose={() => setContact(false)} />
-    </>
+      <ContactModal
+        open={!!contact}
+        initialType={contact?.type || ""}
+        onClose={() => setContact(null)}
+      />
+    </div>
   );
 }
 createRoot(document.getElementById("root")).render(

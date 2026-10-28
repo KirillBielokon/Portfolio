@@ -1,55 +1,55 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1100" fill="none">
 <defs>
-<linearGradient id="bag" x1="1000" y1="400" x2="1360" y2="800" gradientUnits="userSpaceOnUse"><stop stop-color="#dfec8b"/><stop offset=".3" stop-color="#d1e36d"/><stop offset=".73" stop-color="#b6cb4c"/><stop offset="1" stop-color="#dce886"/></linearGradient>
-<linearGradient id="side" x1="1280" y1="600" x2="1380" y2="600" gradientUnits="userSpaceOnUse"><stop stop-color="#95ac35"/><stop offset="1" stop-color="#c1d664"/></linearGradient>
-<linearGradient id="sun" x1="1160" y1="300" x2="1160" y2="920" gradientUnits="userSpaceOnUse"><stop stop-color="#99af77"/><stop offset="1" stop-color="#667b50"/></linearGradient>
+<linearGradient id="bag" x1="1000" y1="400" x2="1360" y2="800" gradientUnits="userSpaceOnUse"><stop stop-color="#ecc39e"/><stop offset=".3" stop-color="#e3b185"/><stop offset=".73" stop-color="#cb976a"/><stop offset="1" stop-color="#e8be9a"/></linearGradient>
+<linearGradient id="side" x1="1280" y1="600" x2="1380" y2="600" gradientUnits="userSpaceOnUse"><stop stop-color="#ac8059"/><stop offset="1" stop-color="#d6a57b"/></linearGradient>
+<linearGradient id="sun" x1="1160" y1="300" x2="1160" y2="920" gradientUnits="userSpaceOnUse"><stop stop-color="#af9782"/><stop offset="1" stop-color="#7b6050"/></linearGradient>
 <filter id="grain"><feTurbulence baseFrequency=".8" numOctaves="3" seed="11" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".07"/></feComponentTransfer><feBlend in="SourceGraphic" mode="multiply"/></filter>
 <filter id="blur"><feGaussianBlur stdDeviation="17"/></filter>
 <clipPath id="clip"><rect x="54" y="50" width="1492" height="1000" rx="3"/></clipPath>
 </defs>
-<rect width="1600" height="1100" fill="#b6c46e"/><rect x="77" y="76" width="1470" height="986" fill="#384e2d" opacity=".14"/>
+<rect width="1600" height="1100" fill="#c49f7f"/><rect x="77" y="76" width="1470" height="986" fill="#4e392d" opacity=".14"/>
 <g clip-path="url(#clip)">
-<rect x="54" y="50" width="1492" height="1000" fill="#193d2b"/>
-<rect x="54" y="50" width="1492" height="34" fill="#d6e488"/><text x="800" y="73" text-anchor="middle" fill="#1a3b2a" font-family="Arial,sans-serif" font-size="10" letter-spacing="1.5">GOOD COFFEE. GOOD COMPANY. FREE SHIPPING OVER €40.</text>
-<g fill="#e8edc7" font-family="Arial,sans-serif" font-size="13" letter-spacing=".5"><text x="104" y="149">SHOP COFFEE ↗</text><text x="1180" y="149">OUR STORY</text><text x="1351" y="149">BAG (0)</text></g>
-<text x="800" y="160" text-anchor="middle" fill="#d6e488" font-family="Arial Black,Arial,sans-serif" font-size="55" font-weight="900" letter-spacing="-4">campo<tspan font-size="36">®</tspan></text>
-<path d="M104 188H1496" stroke="#a3bd76" stroke-opacity=".4"/>
+<rect x="54" y="50" width="1492" height="1000" fill="#3d271a"/>
+<rect x="54" y="50" width="1492" height="34" fill="#e4bd9a"/><text x="800" y="73" text-anchor="middle" fill="#3b261a" font-family="Arial,sans-serif" font-size="10" letter-spacing="1.5">GOOD COFFEE. GOOD COMPANY. FREE SHIPPING OVER €40.</text>
+<g fill="#edddcf" font-family="Arial,sans-serif" font-size="13" letter-spacing=".5"><text x="104" y="149">SHOP COFFEE</text><path d="M209 149l10-10m-10 0h10v10" stroke="#eddbc5" stroke-width="1.2"/><text x="1180" y="149">OUR STORY</text><text x="1351" y="149">BAG (0)</text></g>
+<text x="800" y="160" text-anchor="middle" fill="#e4bd9a" font-family="Arial Black,Arial,sans-serif" font-size="55" font-weight="900" letter-spacing="-4">campo</text>
+<path d="M104 188H1496" stroke="#bd9f84" stroke-opacity=".4"/>
 <!-- playful product stage -->
 <rect x="800" y="227" width="696" height="704" rx="2" fill="url(#sun)"/>
 <g filter="url(#grain)">
-<circle cx="1154" cy="559" r="262" fill="#b6c879"/>
-<path d="M800 841L1496 753V931H800Z" fill="#83945d"/>
-<ellipse cx="1197" cy="855" rx="195" ry="31" fill="#163526" opacity=".34" filter="url(#blur)"/>
+<circle cx="1154" cy="559" r="262" fill="#c8a689"/>
+<path d="M800 841L1496 753V931H800Z" fill="#94715d"/>
+<ellipse cx="1197" cy="855" rx="195" ry="31" fill="#352216" opacity=".34" filter="url(#blur)"/>
 <g transform="rotate(8 1162 602)">
 <!-- standing pouch -->
 <path d="M1010 355L1255 355L1299 409L1329 823Q1320 844 1295 849H1017Q989 846 987 820L1004 411Z" fill="url(#bag)"/>
 <path d="M1255 355L1299 409L1329 823L1290 805L1269 425Z" fill="url(#side)"/>
-<path d="M1010 355L1255 355L1259 392L1007 393Z" fill="#c5d86c"/>
-<path d="M1014 368L1249 367M1013 374L1249 373M1013 380L1250 379" stroke="#95ae3e" stroke-opacity=".5" stroke-width="2"/>
-<path d="M1012 406Q1137 393 1267 405" stroke="#7b9d35" stroke-opacity=".5" stroke-width="3"/>
-<path d="M1011 426L1022 772L1009 816" stroke="#f4ffc4" stroke-opacity=".45" stroke-width="4"/>
-<path d="M1000 815Q1142 795 1302 822L1295 849H1017Z" fill="#aabd51"/>
+<path d="M1010 355L1255 355L1259 392L1007 393Z" fill="#d8aa82"/>
+<path d="M1014 368L1249 367M1013 374L1249 373M1013 380L1250 379" stroke="#ae815a" stroke-opacity=".5" stroke-width="2"/>
+<path d="M1012 406Q1137 393 1267 405" stroke="#9d7552" stroke-opacity=".5" stroke-width="3"/>
+<path d="M1011 426L1022 772L1009 816" stroke="#ffe6d0" stroke-opacity=".45" stroke-width="4"/>
+<path d="M1000 815Q1142 795 1302 822L1295 849H1017Z" fill="#bd8f67"/>
 <!-- coffee bag branding -->
-<text x="1137" y="505" text-anchor="middle" fill="#214831" font-family="Arial Black,Arial,sans-serif" font-size="68" font-weight="900" letter-spacing="-5">campo</text>
-<text x="1137" y="535" text-anchor="middle" fill="#365238" font-family="Arial,sans-serif" font-size="9" letter-spacing="2.6">SPECIALTY COFFEE. EVERY DAY.</text>
+<text x="1137" y="505" text-anchor="middle" fill="#482f21" font-family="Arial Black,Arial,sans-serif" font-size="68" font-weight="900" letter-spacing="-5">campo</text>
+<text x="1137" y="535" text-anchor="middle" fill="#524036" font-family="Arial,sans-serif" font-size="9" letter-spacing="2.6">SPECIALTY COFFEE. EVERY DAY.</text>
 <!-- sun botanical icon -->
-<circle cx="1136" cy="625" r="41" stroke="#31573b" stroke-width="3"/>
-<path d="M1136 565V546M1136 685V704M1076 625H1057M1196 625H1215M1093 582L1079 568M1179 668L1193 682M1093 668L1079 682M1179 582L1193 568" stroke="#31573b" stroke-width="3"/>
-<path d="M1118 614Q1126 605 1132 614M1141 614Q1149 605 1155 614M1119 637Q1136 654 1153 637" stroke="#31573b" stroke-width="3" stroke-linecap="round"/>
-<rect x="1041" y="729" width="195" height="61" fill="#f0f1d7"/><text x="1056" y="753" fill="#254832" font-family="Arial,sans-serif" font-weight="700" font-size="12" letter-spacing=".6">THE DAILY BLEND</text><text x="1056" y="775" fill="#547148" font-family="Arial,sans-serif" font-size="8" letter-spacing="1.5">BRAZIL + COLOMBIA</text><text x="1213" y="775" text-anchor="end" fill="#547148" font-family="Arial,sans-serif" font-size="8">250g</text>
+<circle cx="1136" cy="625" r="41" stroke="#573f31" stroke-width="3"/>
+<path d="M1136 565V546M1136 685V704M1076 625H1057M1196 625H1215M1093 582L1079 568M1179 668L1193 682M1093 668L1079 682M1179 582L1193 568" stroke="#573f31" stroke-width="3"/>
+<path d="M1118 614Q1126 605 1132 614M1141 614Q1149 605 1155 614M1119 637Q1136 654 1153 637" stroke="#573f31" stroke-width="3" stroke-linecap="round"/>
+<rect x="1041" y="729" width="195" height="61" fill="#f1e6dc"/><text x="1056" y="753" fill="#483225" font-family="Arial,sans-serif" font-weight="700" font-size="12" letter-spacing=".6">THE DAILY BLEND</text><text x="1056" y="775" fill="#715748" font-family="Arial,sans-serif" font-size="8" letter-spacing="1.5">BRAZIL + COLOMBIA</text><text x="1213" y="775" text-anchor="end" fill="#715748" font-family="Arial,sans-serif" font-size="8">250g</text>
 </g>
 <!-- sunburst sticker -->
-<path d="M1397 292L1413 308L1434 300L1441 322L1463 327L1456 350L1471 368L1451 382L1450 405L1427 406L1413 424L1395 411L1374 417L1367 395L1345 389L1352 367L1338 349L1357 335L1359 313L1381 310Z" fill="#e7efae"/>
-<text x="1404" y="350" text-anchor="middle" fill="#315539" font-family="Arial,sans-serif" font-size="10" font-weight="700" transform="rotate(10 1404 350)">FRESHLY</text><text x="1401" y="369" text-anchor="middle" fill="#315539" font-family="Arial,sans-serif" font-size="10" font-weight="700" transform="rotate(10 1401 369)">ROASTED!</text>
+<path d="M1397 292L1413 308L1434 300L1441 322L1463 327L1456 350L1471 368L1451 382L1450 405L1427 406L1413 424L1395 411L1374 417L1367 395L1345 389L1352 367L1338 349L1357 335L1359 313L1381 310Z" fill="#efd3bb"/>
+<text x="1404" y="350" text-anchor="middle" fill="#553e31" font-family="Arial,sans-serif" font-size="10" font-weight="700" transform="rotate(10 1404 350)">FRESHLY</text><text x="1401" y="369" text-anchor="middle" fill="#553e31" font-family="Arial,sans-serif" font-size="10" font-weight="700" transform="rotate(10 1401 369)">ROASTED!</text>
 </g>
 <!-- editorial type -->
-<text x="104" y="295" fill="#cfe185" font-family="Arial,sans-serif" font-size="12" letter-spacing="2.2">YOUR NEW MORNING PERSON.</text>
-<g fill="#e5ebc3" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="105" letter-spacing="-7"><text x="96" y="424">Life's too</text><text x="96" y="534">short for</text><text x="96" y="644" fill="#d7e68b">bad coffee.</text></g>
-<text x="104" y="707" fill="#b0c1a0" font-family="Arial,sans-serif" font-size="16">Ridiculously good coffee. Carefully sourced.</text><text x="104" y="734" fill="#b0c1a0" font-family="Arial,sans-serif" font-size="16">Roasted with care. Ready for your everyday.</text>
-<rect x="104" y="784" width="243" height="60" rx="30" fill="#d5e38c"/><text x="135" y="820" fill="#193d2b" font-family="Arial,sans-serif" font-size="12" font-weight="700" letter-spacing="1">MEET YOUR COFFEE</text><path d="M305 813H322M317 808L322 813L317 818" stroke="#193d2b" stroke-width="1.5"/>
-<text x="104" y="910" fill="#b7c6a1" font-family="Arial,sans-serif" font-size="10" letter-spacing="1.5">BETTER MORNINGS START HERE.</text>
-<rect x="54" y="970" width="1492" height="80" fill="#d6e488"/>
-<g fill="#244630" font-family="Arial Black,Arial,sans-serif" font-size="24" font-weight="900" letter-spacing="-.5"><text x="74" y="1022">GOOD COFFEE.</text><text x="375" y="1022">GOOD COMPANY.</text><text x="712" y="1022">GOOD MORNINGS.</text><text x="1060" y="1022">GOOD COFFEE.</text><text x="1360" y="1022">GOOD DAYS.</text></g>
-<g fill="#244630"><path d="M324 1000V1028M310 1014H338M314 1004L334 1024M334 1004L314 1024" stroke="#244630" stroke-width="3"/><path d="M664 1000V1028M650 1014H678M654 1004L674 1024M674 1004L654 1024" stroke="#244630" stroke-width="3"/><path d="M1014 1000V1028M1000 1014H1028M1004 1004L1024 1024M1024 1004L1004 1024" stroke="#244630" stroke-width="3"/></g>
+<text x="104" y="295" fill="#e1ba97" font-family="Arial,sans-serif" font-size="12" letter-spacing="2.2">YOUR NEW MORNING PERSON.</text>
+<g fill="#ebdacb" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="105" letter-spacing="-7"><text x="96" y="424">Life's too</text><text x="96" y="534">short for</text><text x="96" y="644" fill="#e6bf9d">bad coffee.</text></g>
+<text x="104" y="707" fill="#c1b3a7" font-family="Arial,sans-serif" font-size="16">Ridiculously good coffee. Carefully sourced.</text><text x="104" y="734" fill="#c1b3a7" font-family="Arial,sans-serif" font-size="16">Roasted with care. Ready for your everyday.</text>
+<rect x="104" y="784" width="243" height="60" rx="30" fill="#e3be9d"/><text x="135" y="820" fill="#3d271a" font-family="Arial,sans-serif" font-size="12" font-weight="700" letter-spacing="1">MEET YOUR COFFEE</text><path d="M305 813H322M317 808L322 813L317 818" stroke="#3d271a" stroke-width="1.5"/>
+<text x="104" y="910" fill="#c6b6a8" font-family="Arial,sans-serif" font-size="10" letter-spacing="1.5">BETTER MORNINGS START HERE.</text>
+<rect x="54" y="970" width="1492" height="80" fill="#e4bd9a"/>
+<g fill="#463024" font-family="Arial Black,Arial,sans-serif" font-size="24" font-weight="900" letter-spacing="-.5"><text x="74" y="1022">GOOD COFFEE.</text><text x="375" y="1022">GOOD COMPANY.</text><text x="712" y="1022">GOOD MORNINGS.</text><text x="1060" y="1022">GOOD COFFEE.</text><text x="1360" y="1022">GOOD DAYS.</text></g>
+<g fill="#463024"><path d="M324 1000V1028M310 1014H338M314 1004L334 1024M334 1004L314 1024" stroke="#463024" stroke-width="3"/><path d="M664 1000V1028M650 1014H678M654 1004L674 1024M674 1004L654 1024" stroke="#463024" stroke-width="3"/><path d="M1014 1000V1028M1000 1014H1028M1004 1004L1024 1024M1024 1004L1004 1024" stroke="#463024" stroke-width="3"/></g>
 </g>
 </svg>

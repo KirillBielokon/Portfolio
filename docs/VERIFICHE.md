@@ -1,22 +1,26 @@
-# Verifiche — Studio 02
+# Verifiche — Studio 03
 
-Redesign successivo alla conferma dell’utente che il dominio pubblico funziona. Dominio, record DNS e configurazione HTTPS non vengono modificati per questo aggiornamento.
+Redesign scuro, blu elettrico e viola, con scene WebGL/CSS 3D e laboratorio web/social. Le impostazioni del dominio restano invariate.
 
-## Comportamento
+## Comportamento verificato
 
-- Build Vite completata.
-- **12 test Playwright superati**, 0 falliti, sulla build di produzione.
-- Rendering reale del canvas, tre composizioni differenti, pausa e movimento ridotto verificati tramite contenuto pixel, oltre allo stato accessibile dei controlli.
-- Layout a 320, 390, 768 e 1440 px: nessuno scorrimento orizzontale.
-- Galleria desktop: selezione e scroll tra i concept, apertura/chiusura delle finestre e disclosure degli studi personali.
-- Mobile: tutti e tre i concept in sequenza verticale.
-- Menu mobile: focus contenuto, Escape, ripristino dello sfondo e passaggio a desktop.
-- Form: email facoltativa, brief, modifica, download e link WhatsApp corretto. Nessun messaggio inviato al numero reale durante i test.
-- Controlli axe: nessuna violazione rilevata su homepage, modalità Social, contatti, menu mobile e progetto Campo nelle schermate verificate.
-- Nessun errore JavaScript o richiesta fallita nelle sessioni di verifica funzionale locale.
+- Build Vite completata; 14 test Playwright superati, nessun test saltato.
+- Nessun errore JavaScript o richiesta fallita nella verifica locale degli asset.
+- Nessuno scorrimento orizzontale a 320, 390, 768 e 1440 px; contatti raggiungibili.
+- Composizione SVG completa senza GPU, movimento effettivo e pausa verificati; preferenza di movimento ridotto rispettata.
+- Laboratorio: cambio settore, dimensioni, menu, note, didascalie dei post, vista coordinata e accesso ai contatti.
+- Tre concept esplorabili su desktop e telefono, dichiarazione esplicita dei brand immaginari, Escape e ripristino del focus.
+- Menu mobile con focus contenuto, Escape e ripristino al passaggio desktop.
+- FAQ con stato accessibile; servizio social preselezionato nel brief.
+- Form con email facoltativa, messaggio completo, download e modifica. Nessun messaggio di test inviato al numero reale.
+- Axe: zero violazioni WCAG A/AA e 2.1 AA rilevate nei cinque stati controllati: desktop, progetto Forma, contatti, menu mobile e homepage a 390 px. Questo non sostituisce una valutazione completa con tecnologie assistive.
 
-## Movimento e prestazioni
+## Scene e prestazioni
 
-Il laboratorio sospende l’animazione fuori schermo e a scheda nascosta, supporta una pausa esplicita e la preferenza di movimento ridotto. La regia di scroll usa un driver nativo con misure memorizzate: durante lo scroll non vengono richiesti nuovi calcoli di layout. I contenuti restano visibili anche scorrendo velocemente. Il carattere dei titoli è locale e precaricato.
+La scena hero usa Three.js su GPU compatibili e conserva una composizione SVG negli altri casi. Il controllo esplicito dei renderer software avviene prima dell’import di Three: evita il costo del rendering 3D su CPU. Una seconda scena usa CSS 3D, senza un secondo contesto WebGL. Pausa, movimento ridotto e visibilità delle scene controllano il movimento continuo.
 
-I risultati di Lighthouse sono misure di laboratorio sulla build locale, non dati dei visitatori reali. Audit finale mobile isolato, sulla build `index-D8RTiwBZ.js`: **prestazioni 95, accessibilità 100, best practice 100, SEO 100**. FCP/LCP 0,8 s; TBT 250 ms; CLS 0; Speed Index 1,2 s. Le scene e il canvas sono attivi durante la misura.
+Lighthouse mobile isolato sulla build locale: **prestazioni 99, accessibilità 100, best practice 100, SEO 100**. FCP/LCP 0,9 s; TBT 140 ms; CLS 0; Speed Index 1,4 s. Il browser di laboratorio usa la composizione SVG, perché dispone di un renderer software. Queste misure non descrivono le prestazioni WebGL su ogni dispositivo reale.
+
+## Hosting
+
+Verifica API in sola lettura: Pages dal ramo `gh-pages`, dominio `kirillbielokon.com`, HTTPS forzato. Prima dell’aggiornamento, il dominio principale risponde HTTPS 200 e `www` reindirizza a quello principale con 301. Lo stato della nuova pubblicazione viene registrato in `PUBBLICAZIONE.md` dopo il deployment.

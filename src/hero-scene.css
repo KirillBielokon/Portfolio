@@ -1,0 +1,114 @@
+.hscene-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  isolation: isolate;
+  touch-action: pan-y;
+}
+.hscene-canvas,
+.hscene-fallback {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.7s ease;
+  pointer-events: none;
+}
+.hscene-canvas {
+  opacity: 0;
+  z-index: 2;
+}
+.hscene-fallback {
+  z-index: 1;
+  filter: drop-shadow(0 22px 30px #14113d60);
+  animation: hscene-float 7s ease-in-out infinite;
+}
+.hscene-ready .hscene-canvas {
+  opacity: 1;
+}
+.hscene-ready .hscene-fallback {
+  opacity: 0;
+  animation-play-state: paused;
+}
+.hscene-floor {
+  position: absolute;
+  left: 24%;
+  right: 21%;
+  bottom: 8%;
+  height: 7%;
+  border-radius: 50%;
+  background: #6265f5;
+  opacity: 0.15;
+  filter: blur(25px);
+  transform: rotate(-7deg);
+  z-index: 0;
+  pointer-events: none;
+}
+.hscene-fallback-orbits {
+  transform-origin: 310px 300px;
+  animation: hscene-orbits 20s ease-in-out infinite alternate;
+}
+.hscene-fallback-orb-a {
+  animation: hscene-orb-a 9s ease-in-out infinite;
+}
+.hscene-fallback-orb-b {
+  animation: hscene-orb-b 10s ease-in-out infinite;
+}
+.hscene-fallback-stars {
+  animation: hscene-stars 8s ease-in-out infinite alternate;
+}
+.hscene-fallback-crystal {
+  animation: hscene-crystal 10s ease-in-out infinite alternate;
+}
+.hscene-ready .hscene-fallback *,
+.hscene-root[data-running="false"] .hscene-fallback,
+.hscene-root[data-running="false"] .hscene-fallback * {
+  animation-play-state: paused;
+}
+@keyframes hscene-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1deg);
+  }
+}
+@keyframes hscene-orbits {
+  to {
+    transform: rotate(15deg);
+  }
+}
+@keyframes hscene-orb-a {
+  50% {
+    transform: translate(-15px, 19px);
+  }
+}
+@keyframes hscene-orb-b {
+  50% {
+    transform: translate(14px, -16px);
+  }
+}
+@keyframes hscene-stars {
+  to {
+    opacity: 0.3;
+  }
+}
+@keyframes hscene-crystal {
+  to {
+    opacity: 0.5;
+    filter: drop-shadow(0 0 5px #a5b5ff);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hscene-fallback,
+  .hscene-fallback * {
+    animation: none;
+  }
+  .hscene-canvas,
+  .hscene-fallback {
+    transition: none;
+  }
+}

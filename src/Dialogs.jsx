@@ -136,7 +136,7 @@ export function ProjectModal({ project, onClose, onContact }) {
   );
 }
 
-export function ContactModal({ open, onClose }) {
+export function ContactModal({ open, onClose, initialType = "" }) {
   const [ready, setReady] = useState(false);
   const [copied, setCopied] = useState(false);
   const [copyError, setCopyError] = useState(false);
@@ -177,8 +177,13 @@ export function ContactModal({ open, onClose }) {
       setReady(false);
       setCopied(false);
       setCopyError(false);
+      if (
+        ["Sito web", "Gestione social", "Sito + social"].includes(initialType)
+      ) {
+        setForm((previous) => ({ ...previous, type: initialType }));
+      }
     }
-  }, [open]);
+  }, [open, initialType]);
   useEffect(() => {
     if (open) {
       document
@@ -271,7 +276,7 @@ export function ContactModal({ open, onClose }) {
                           checked={form.type === type}
                           onChange={change}
                         />
-                        {type}
+                        <span>{type}</span>
                       </label>
                     ),
                   )}
