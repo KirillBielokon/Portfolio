@@ -1,12 +1,18 @@
 # Pubblicazione su kirillbielokon.com
 
-## Stato attuale
+## Stato attuale — Studio 03
 
-Il redesign **Studio02** è stato caricato nel commit build `24de4f046eb5ade255fb2317954965b4cecc82b2`. [GitHubPagesrun#6](https://github.com/KirillBielokon/Portfolio/actions/runs/40594628132) conferma **SUCCESS** e destinazione **https://kirillbielokon.com/**. La verifica del deployment non equivale a un test funzionale diretto sul dominio; i test sono stati eseguiti sulla build locale.
+Pubblicato il redesign scuro blu elettrico/viola, con scene 3D e laboratorio interattivo. Sorgente: `6704ba2`. Build pubblicata: `414cf5f4b63b2958ef8906b1a853fc63ca7e2f38`.
 
-**L’utente ha confermato che il sito funziona sul dominio.** La migrazione a GitHub Pages è completata dal suo punto di vista. Le sezioni successive conservano lo storico diagnostico: non ripetere cambi DNS, richieste di chiavi IONOS o rimozioni del custom domain per un aggiornamento del sito. Il redesign successivo viene caricato nel ramo `gh-pages`, mantenendo dominio e impostazioni HTTPS.
+[GitHub Pages run 40677881602](https://github.com/KirillBielokon/Portfolio/actions/runs/40677881602): **SUCCESS**, SHA completo corrispondente alla build. API Pages: `status=built`, `cname=kirillbielokon.com`, `https_enforced=true`, sorgente `gh-pages /`.
 
-## Stato verificato dopo le modifiche dell’utente
+Verifica HTTPS dopo il deployment: homepage, JavaScript, CSS, favicon e immagine social rispondono **200** e coincidono byte per byte con la build locale. `https://www.kirillbielokon.com/` reindirizza al dominio principale e restituisce lo stesso HTML. Le richieste Python/OS mantengono la verifica TLS abilitata. La navigazione remota con Chromium è limitata dal trust store del browser nell’ambiente (`ERR_CERT_AUTHORITY_INVALID`); non è stata disabilitata la verifica TLS. I 14 test funzionali hanno verificato la stessa build in locale.
+
+Dominio e HTTPS erano già funzionanti e non sono stati modificati. Non rimuovere il custom domain, cambiare DNS o richiedere credenziali IONOS per aggiornare il sito. La bozza `start_skill` dell’ambiente è stata aggiornata con istruzioni correnti; il salvataggio della configurazione non pubblica uno snapshot dell’ambiente e resta distinto dalla pubblicazione del sito, già completata.
+
+Le sezioni successive conservano lo storico della migrazione, ormai completata. I vecchi blocchi di rete 403 e il certificato pendente non descrivono lo stato attuale.
+
+## Storico della migrazione iniziale (superato)
 
 GitHub conferma la pubblicazione riuscita del commit della build `8859e50` nel [deployment Pages #1](https://github.com/KirillBielokon/Portfolio/actions/runs/40536623125), ramo `gh-pages`. L’URL dell’ambiente è `http://kirillbielokon.com/`. Questo è un riscontro di pubblicazione dell’hosting, non una verifica diretta di DNS o HTTPS.
 

@@ -23,4 +23,4 @@ Lighthouse mobile isolato sulla build locale: **prestazioni 99, accessibilità 1
 
 ## Hosting
 
-Verifica API in sola lettura: Pages dal ramo `gh-pages`, dominio `kirillbielokon.com`, HTTPS forzato. Prima dell’aggiornamento, il dominio principale risponde HTTPS 200 e `www` reindirizza a quello principale con 301. Lo stato della nuova pubblicazione viene registrato in `PUBBLICAZIONE.md` dopo il deployment.
+Verifica API in sola lettura: Pages dal ramo `gh-pages`, dominio `kirillbielokon.com`, HTTPS forzato. Prima dell’aggiornamento, il dominio principale risponde HTTPS 200 e `www` reindirizza a quello principale con 301. Deployment Studio 03 riuscito: run `40677881602`, build `414cf5f4b63b2958ef8906b1a853fc63ca7e2f38`. Homepage, JS, CSS, favicon e immagine social pubblici coincidono con la build verificata; `www` restituisce lo stesso HTML dopo il redirect. La navigazione remota Chromium resta limitata dal trust store dell’ambiente; richieste HTTPS Python/OS con verifica TLS e test funzionali locali sono completati.
