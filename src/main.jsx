@@ -9,12 +9,10 @@ import {
   Pause,
   Play,
   Check,
-  Globe2,
   Layers3,
-  MousePointer2,
   MessageCircle,
+  Mail,
   Code2,
-  Palette,
   Compass,
   PackageCheck,
   Plus,
@@ -26,106 +24,27 @@ import HeroScene from "./HeroScene";
 import OrbitScene from "./OrbitScene";
 import ProofLab from "./ProofLab";
 import { ProjectModal, ContactModal } from "./Dialogs";
-import { projects } from "./content";
+import { profile, projects, services, faqs } from "./content";
 import "./styles.css";
 
 const WHATSAPP =
-  "https://wa.me/393896322180?text=" +
+  `https://wa.me/${profile.whatsappNumber}?text=` +
   encodeURIComponent(
     "Ciao Kirill! Ho visto il tuo portfolio e vorrei parlarti della mia attività.",
   );
 const NAV = [
-  ["competenze", "Laboratorio"],
   ["progetti", "Progetti"],
+  ["competenze", "Laboratorio"],
   ["approccio", "Chi sono"],
   ["servizi", "Servizi"],
 ];
-const PROJECTS = [
-  {
-    name: "Forma Studio",
-    category: "Architettura, con spazio per respirare.",
-    description:
-      "Un sito editoriale per uno studio di architettura immaginario. Fotografie protagoniste, tipografia essenziale e un percorso semplice verso il contatto.",
-    tags: ["Web design", "Sviluppo web"],
-    url: "forma.studio / concept",
-  },
-  {
-    name: "Aether",
-    category: "La cura, anche nei dettagli.",
-    description:
-      "Uno studio di identità digitale per un brand skincare immaginario. Una direzione calda e sensoriale, dal prodotto alla sua presentazione online.",
-    tags: ["Direzione visiva", "Web design"],
-    url: "aether.skin / concept",
-  },
-  {
-    name: "Campo",
-    category: "Un’identità che vive anche nel feed.",
-    description:
-      "Un sistema di contenuti per un caffè immaginario. Grafiche, tono di voce e sito seguono la stessa direzione, mantenendo riconoscibile il brand.",
-    tags: ["Social media", "Identità digitale"],
-    url: "campo.cafe / concept",
-  },
-];
-const SERVICES = [
-  {
-    icon: Code2,
-    title: "Siti web.",
-    text: "Il tuo spazio online, progettato intorno a quello che fai e alle persone che vuoi raggiungere.",
-    items: [
-      "Struttura e design su misura",
-      "Sviluppo responsive",
-      "Animazioni e interazioni",
-      "Pubblicazione e controllo finale",
-    ],
-    type: "Sito web",
-  },
-  {
-    icon: Layers3,
-    title: "Social media.",
-    text: "Una presenza riconoscibile e contenuti con una direzione, prima ancora di premere pubblica.",
-    items: [
-      "Direzione visiva e tono di voce",
-      "Piano editoriale",
-      "Grafiche e copy",
-      "Organizzazione dei contenuti",
-    ],
-    type: "Gestione social",
-  },
-  {
-    icon: Compass,
-    title: "Una sola direzione.",
-    text: "Sito e social che parlano la stessa lingua. Per dare coerenza a ogni punto di contatto.",
-    items: [
-      "Identità digitale coordinata",
-      "Sito e contenuti social",
-      "Stile visivo condiviso",
-      "Un unico interlocutore",
-    ],
-    type: "Sito + social",
-  },
-];
-const FAQ = [
-  [
-    "Come inizia un progetto?",
-    "Con una conversazione. Mi racconti la tua attività, cosa ti serve e quali obiettivi hai. Poi preparo una proposta con attività, tempi e costi: il lavoro parte dopo aver concordato questi punti.",
-  ],
-  [
-    "Puoi riprogettare il mio sito attuale?",
-    "Sì. Partiamo da ciò che funziona e da ciò che vuoi migliorare: struttura, aspetto, esperienza da telefono e percorso verso il contatto. Ti propongo gli interventi adatti al tuo caso.",
-  ],
-  [
-    "Quanto costa e quanto tempo serve?",
-    "Dipende dalle pagine, dai contenuti e dalle funzionalità. Dopo il primo confronto ricevi una proposta con un preventivo e un calendario. Nessun prezzo generico prima di capire il progetto.",
-  ],
-  [
-    "Puoi seguire sia il sito sia i social?",
-    "Sì. Posso lavorare sul sito, sui social o su entrambi, con una direzione visiva e un tono di voce coordinati. Definiamo insieme attività, materiali e frequenza dei contenuti.",
-  ],
-  [
-    "E dopo la pubblicazione?",
-    "La consegna comprende un controllo finale e le indicazioni per usare ciò che abbiamo creato. Eventuali aggiornamenti e supporto continuativo si concordano nella proposta, in base alle tue esigenze.",
-  ],
-];
+const serviceIcons = [Code2, Layers3, Compass];
+const SERVICES = services.map((service, index) => ({
+  ...service,
+  icon: serviceIcons[index],
+  items: service.details,
+}));
+const FAQ = faqs.map(({ q, a }) => [q, a]);
 
 function Mark({ id }) {
   return (
@@ -274,32 +193,51 @@ function Ambient() {
 function Hero({ paused, onPause }) {
   const hero = useRef(null);
   useEffect(() => {
-    const mq = matchMedia("(prefers-reduced-motion: reduce)");
-    if (mq.matches) return;
-    let raf = 0;
-    let size = window.innerHeight;
+    const preference = matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+    let viewport = window.innerHeight;
+    let previous = -1;
     const draw = () => {
-      raf = 0;
-      hero.current?.style.setProperty(
-        "--hero-scroll",
-        String(Math.min(window.scrollY / size, 1)),
-      );
+      frame = 0;
+      const progress =
+        paused || preference.matches
+          ? 0
+          : Math.min(window.scrollY / viewport, 1);
+      if (progress !== previous) {
+        hero.current?.style.setProperty("--hero-scroll", String(progress));
+        previous = progress;
+      }
     };
     const scroll = () => {
-      if (!raf) raf = requestAnimationFrame(draw);
+      if (
+        paused ||
+        preference.matches ||
+        document.hidden ||
+        (window.scrollY >= viewport && previous === 1)
+      )
+        return;
+      if (!frame) frame = requestAnimationFrame(draw);
     };
     const resize = () => {
-      size = window.innerHeight;
-      scroll();
+      viewport = window.innerHeight;
+      draw();
     };
+    const visibility = () => {
+      if (!document.hidden) draw();
+    };
+    draw();
     window.addEventListener("scroll", scroll, { passive: true });
     window.addEventListener("resize", resize);
+    preference.addEventListener("change", draw);
+    document.addEventListener("visibilitychange", visibility);
     return () => {
-      cancelAnimationFrame(raf);
+      cancelAnimationFrame(frame);
       window.removeEventListener("scroll", scroll);
       window.removeEventListener("resize", resize);
+      preference.removeEventListener("change", draw);
+      document.removeEventListener("visibilitychange", visibility);
     };
-  }, []);
+  }, [paused]);
   return (
     <section
       ref={hero}
@@ -310,38 +248,39 @@ function Hero({ paused, onPause }) {
       <div className="hero-main">
         <div className="hero-copy">
           <p className="eyebrow hero-kicker">
-            Kirill Bielokon · Web & social design
+            Kirill Bielokon · Sviluppo web & gestione social
           </p>
-          <h1 id="hero-title" aria-label="La tua attività, in un’altra dimensione.">
+          <h1
+            id="hero-title"
+            className="hero-title-concrete"
+            aria-label="Landing page e siti web per la tua attività."
+          >
             <span className="title-line">
-              <span>La tua attività,</span>
+              <span>Landing page</span>
             </span>
             <span className="title-line">
-              <span>in un’altra</span>
+              <span>e siti web</span>
             </span>
             <span className="title-line">
-              <span className="gradient-text">dimensione.</span>
+              <span className="gradient-text">per la tua attività.</span>
             </span>
           </h1>
           <p className="hero-desc">
-            Siti web e contenuti social che danno forma alla tua identità. Li
-            progetto e li realizzo con cura, per farti presentare bene. Dal
-            primo sguardo all’ultimo dettaglio.
+            Progetto e realizzo pagine che spiegano cosa offri e rendono
+            semplice contattarti. Posso affiancarle a contenuti social
+            coordinati.
           </p>
           <div className="hero-actions">
+            <a className="button button-primary" href="#progetti">
+              Guarda i progetti <ArrowDown />
+            </a>
             <a
-              className="button button-primary"
+              className="button button-glass hero-secondary"
               href={WHATSAPP}
               target="_blank"
               rel="noreferrer"
             >
-              Parliamo della tua idea <ArrowUpRight />
-            </a>
-            <a
-              className="button button-glass hero-secondary"
-              href="#competenze"
-            >
-              Guarda cosa posso fare <ArrowDown />
+              Parliamo del tuo progetto <ArrowUpRight />
             </a>
           </div>
         </div>
@@ -379,8 +318,8 @@ function Hero({ paused, onPause }) {
             Proposta chiara prima di iniziare
           </span>
         </div>
-        <a className="scroll-cue" href="#competenze">
-          SCOPRI IL MIO MONDO <ArrowDown />
+        <a className="scroll-cue" href="#progetti">
+          ESPLORA I PROGETTI <ArrowDown />
         </a>
         <button
           className="motion-toggle"
@@ -394,28 +333,54 @@ function Hero({ paused, onPause }) {
     </section>
   );
 }
-function depthEnter(e) {
+const depthStates = new WeakMap();
+function depthEnter(event) {
   if (
     matchMedia("(prefers-reduced-motion: reduce), (pointer: coarse)").matches ||
     document.documentElement.dataset.motion === "paused"
   )
     return;
-  e.currentTarget._depthBounds = e.currentTarget.getBoundingClientRect();
+  const node = event.currentTarget;
+  const bounds = node.getBoundingClientRect();
+  depthStates.set(node, {
+    bounds,
+    scrollY: window.scrollY,
+    width: window.innerWidth,
+    frame: 0,
+  });
 }
-function depthMove(e) {
-  const node = e.currentTarget,
-    bounds = node._depthBounds;
-  if (!bounds || document.documentElement.dataset.motion === "paused") return;
-  const x = Math.min(1, Math.max(0, (e.clientX - bounds.left) / bounds.width)),
-    y = Math.min(1, Math.max(0, (e.clientY - bounds.top) / bounds.height));
-  node.style.setProperty("--tilt-x", (0.5 - y) * 8 + "deg");
-  node.style.setProperty("--tilt-y", (x - 0.5) * 9 + "deg");
-  node.style.setProperty("--shine-x", x * 100 + "%");
-  node.style.setProperty("--shine-y", y * 100 + "%");
+function depthMove(event) {
+  const node = event.currentTarget,
+    state = depthStates.get(node);
+  if (!state) return;
+  state.x = event.clientX;
+  state.y = event.clientY;
+  if (state.frame) return;
+  state.frame = requestAnimationFrame(() => {
+    state.frame = 0;
+    if (
+      document.documentElement.dataset.motion === "paused" ||
+      matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      state.width !== window.innerWidth
+    )
+      return;
+    const top = state.bounds.top + state.scrollY - window.scrollY;
+    const x = Math.min(
+      1,
+      Math.max(0, (state.x - state.bounds.left) / state.bounds.width),
+    );
+    const y = Math.min(1, Math.max(0, (state.y - top) / state.bounds.height));
+    node.style.setProperty("--tilt-x", (0.5 - y) * 8 + "deg");
+    node.style.setProperty("--tilt-y", (x - 0.5) * 9 + "deg");
+    node.style.setProperty("--shine-x", x * 100 + "%");
+    node.style.setProperty("--shine-y", y * 100 + "%");
+  });
 }
-function depthLeave(e) {
-  const node = e.currentTarget;
-  node._depthBounds = null;
+function depthLeave(event) {
+  const node = event.currentTarget,
+    state = depthStates.get(node);
+  if (state) cancelAnimationFrame(state.frame);
+  depthStates.delete(node);
   node.style.setProperty("--tilt-x", "0deg");
   node.style.setProperty("--tilt-y", "0deg");
 }
@@ -437,7 +402,7 @@ function Work({ onProject }) {
         </p>
       </div>
       <div className="project-list">
-        {PROJECTS.map((item, i) => (
+        {projects.map((item) => (
           <article className="project-card reveal" data-reveal key={item.name}>
             <button
               className="project-image"
@@ -445,17 +410,17 @@ function Work({ onProject }) {
               onPointerMove={depthMove}
               onPointerLeave={depthLeave}
               aria-label={"Esplora " + item.name + ", studio di design"}
-              onClick={() => onProject(projects[i])}
+              onClick={() => onProject(item)}
             >
               <span className="browser-bar" aria-hidden="true">
                 <i />
                 <i />
                 <i />
-                <span>{item.url}</span>
+                <span>{item.previewLabel}</span>
                 <LockKeyhole />
               </span>
               <img
-                src={projects[i].image}
+                src={item.image}
                 alt={"Anteprima del concept " + item.name}
                 width="1600"
                 height="1100"
@@ -467,23 +432,29 @@ function Work({ onProject }) {
               </span>
             </button>
             <div className="project-info">
-              <span className="project-number">0{i + 1} / CONCEPT</span>
+              <span className="project-number">
+                {item.number} / {item.demoUrl ? "DEMO NAVIGABILE" : "CONCEPT"}
+              </span>
               <h3>{item.name}</h3>
-              <p>{item.description}</p>
+              <p>{item.summary}</p>
               <div className="project-tags">
                 {item.tags.map((tag) => (
                   <span key={tag}>{tag}</span>
                 ))}
               </div>
-              <button
-                className="text-link"
-                onClick={() => onProject(projects[i])}
-              >
-                Dentro al progetto <ArrowUpRight />
-              </button>
+              <div className="project-actions">
+                {item.demoUrl && (
+                  <a className="button button-glass" href={item.demoUrl}>
+                    Apri la demo <ArrowUpRight />
+                  </a>
+                )}
+                <button className="text-link" onClick={() => onProject(item)}>
+                  Dentro al progetto <ArrowUpRight />
+                </button>
+              </div>
               <br />
               <span className="concept-label">
-                Studio personale · Brand immaginario
+                Progetto personale dimostrativo
               </span>
             </div>
           </article>
@@ -560,7 +531,7 @@ function About() {
           </div>
           <span className="identity-label">La persona dietro i pixel</span>
           <h3>Kirill Bielokon.</h3>
-          <p>Web developer & social media designer.</p>
+          <p>Sviluppo web, backend & gestione social.</p>
         </div>
         <div className="about-copy reveal" data-reveal>
           <p className="eyebrow">Piacere, sono Kirill</p>
@@ -570,14 +541,16 @@ function About() {
             <span className="gradient-text">Metodo che si capisce.</span>
           </h2>
           <p>
-            Mi piace quando un progetto ha carattere, ma anche quando ogni
-            dettaglio ha un motivo. Unisco sviluppo web e contenuti social per
-            costruire una presenza che ti rappresenti.
+            Mi occupo di sviluppo web e backend. Affianco la cura delle
+            interfacce alla logica che le fa funzionare: una pagina deve essere
+            chiara da usare e solida nella struttura.
           </p>
           <p>
-            Seguo il progetto dall’idea alla pubblicazione. Parli direttamente
-            con me: definiamo una direzione, ci confrontiamo sulle scelte e
-            mettiamo ordine in ciò che serve.
+            Porto questo approccio anche nella presenza online della tua
+            attività: definisco il percorso, realizzo il sito e seguo la
+            pubblicazione. Per i social preparo piano editoriale, grafiche e
+            testi e mi occupo di pubblicazione e gestione, con un perimetro
+            concordato prima di iniziare.
           </p>
           <div className="trust-list">
             {[
@@ -768,6 +741,11 @@ function Contact({ onContact }) {
             <MessageCircle />
             Scrivimi su WhatsApp <ArrowUpRight />
           </a>
+          <a className="contact-email" href={`mailto:${profile.email}`}>
+            <Mail size={17} />
+            {profile.email}
+            <ArrowUpRight size={16} />
+          </a>
           <button className="text-link" onClick={() => onContact()}>
             Preferisci mettere in ordine le idee? <ArrowUpRight />
           </button>
@@ -796,8 +774,9 @@ function Footer() {
           © {new Date().getFullYear()} Kirill Bielokon. Progettato e sviluppato
           con cura.
         </span>
-        <a href={WHATSAPP} target="_blank" rel="noreferrer">
-          Da un’idea a una conversazione ↗
+        <a href={`mailto:${profile.email}`} className="footer-email">
+          {profile.email}
+          <ArrowUpRight size={12} />
         </a>
       </div>
     </footer>
@@ -836,8 +815,8 @@ function App() {
       <Header onContact={openContact} />
       <main id="contenuto">
         <Hero paused={paused} onPause={() => setPaused(!paused)} />
-        <ProofLab onContact={openContact} />
         <Work onProject={setProject} />
+        <ProofLab onContact={openContact} />
         <CapabilityRail />
         <About />
         <Services onContact={openContact} paused={paused} />

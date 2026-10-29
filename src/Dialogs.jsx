@@ -7,6 +7,7 @@ import {
   Copy,
   Download,
   MessageCircle,
+  Mail,
 } from "lucide-react";
 import { profile } from "./content";
 
@@ -69,6 +70,14 @@ export function ProjectModal({ project, onClose, onContact }) {
               <span className="orange">.</span>
             </h2>
             <p>{project.intro}</p>
+            {project.demoUrl && (
+              <a
+                className="button button-primary project-demo-button"
+                href={project.demoUrl}
+              >
+                Apri la demo <ArrowUpRight size={18} />
+              </a>
+            )}
             <div className="project-tags">
               {project.tags.map((tag) => (
                 <span key={tag}>{tag}</span>
@@ -116,9 +125,10 @@ export function ProjectModal({ project, onClose, onContact }) {
               ))}
             </div>
             <p className="concept-note">
-              Questo progetto è un concept originale per un brand immaginario.
-              Non rappresenta un incarico cliente, un sito pubblicato o
-              risultati commerciali.
+              Progetto personale dimostrativo per un brand immaginario.
+              {project.demoUrl
+                ? " La demo è navigabile; lo studio e i suoi progetti sono immaginari. Il percorso di contatto permette di preparare un messaggio, senza inviarlo a uno studio reale."
+                : " Non rappresenta un incarico cliente, un negozio attivo o risultati commerciali."}
             </p>
             <button
               className="button button-orange"
@@ -227,6 +237,9 @@ export function ContactModal({ open, onClose, initialType = "" }) {
             >
               <MessageCircle size={19} /> Scrivimi su WhatsApp{" "}
               <ArrowUpRight size={18} />
+            </a>
+            <a className="contact-email" href={`mailto:${profile.email}`}>
+              <Mail size={17} /> {profile.email} <ArrowUpRight size={16} />
             </a>
             <div className="contact-separator">
               <span />

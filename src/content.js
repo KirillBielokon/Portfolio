@@ -4,6 +4,7 @@ export const profile = {
   whatsappNumber: "393896322180",
   whatsappDisplay: "+39 389 632 2180",
   website: "https://kirillbielokon.com",
+  email: "kirillbielokon@gmail.com",
 };
 
 export const projects = [
@@ -14,19 +15,25 @@ export const projects = [
     category: "Architettura & spazi",
     tags: ["Art direction", "Web design"],
     image: "/images/forma-concept.svg",
+    demoUrl: "/demo/forma/",
     color: "#d7dce4",
     intro: "Una casa per i progetti.",
+    summary:
+      "Un sito completo per uno studio di architettura immaginario: esplora le pagine, filtra i progetti, apri le gallerie e prova il contatto.",
+    previewLabel: "forma.studio / demo navigabile",
     description:
-      "Un concept web per uno studio di architettura immaginario. Ho lavorato su una homepage che presenta subito uno spazio, poi invita a esplorare il lavoro dello studio. Pochi elementi, proporzioni precise e colori presi dai materiali.",
+      "Un progetto personale dimostrativo per uno studio di architettura immaginario. La demo completa comprende homepage, archivio filtrabile, schede progetto, presentazione dello studio e un percorso di contatto provabile. Puoi navigarla anche da telefono.",
     challenge:
       "Chi visita il sito di un architetto deve poterne leggere il gusto già dal primo progetto. La sfida era dare spazio alle immagini e rendere immediati l’accesso ai lavori, la presentazione dello studio e il contatto.",
     approach:
-      "Una griglia orizzontale, un progetto in apertura e una navigazione ridotta all’essenziale. Avorio, grafite e titoli serif riprendono i toni dell’immagine della villa. Ogni elemento dell’interfaccia lascia respiro al progetto.",
+      "Avorio, grafite e titoli serif lasciano spazio alle immagini. Ho sviluppato pagine collegate, filtri, gallerie e navigazione mobile: il percorso conduce dal primo progetto alla preparazione di una richiesta. Il modulo è dimostrativo e non invia dati a uno studio reale.",
     deliverables: [
       "Direzione visiva",
       "Sistema tipografico",
-      "Design dell’homepage",
-      "Studio delle interazioni",
+      "Demo web completa e navigabile",
+      "Navigazione e layout responsive",
+      "Gallerie e filtri interattivi",
+      "Percorso di contatto dimostrativo",
     ],
   },
   {
@@ -38,6 +45,9 @@ export const projects = [
     image: "/images/aether-concept.svg",
     color: "#e8ddd0",
     intro: "Il prodotto diventa il racconto.",
+    summary:
+      "Uno studio di identità digitale per un brand skincare immaginario. Una direzione calda e sensoriale, dal prodotto alla sua presentazione online.",
+    previewLabel: "aether.skin / concept",
     description:
       "Un concept di e-commerce per un brand immaginario di skincare. Una piccola gamma, presentata con colori caldi, composizioni di prodotto e testi brevi. Ho esplorato il primo incontro con il brand, dalla homepage alla scoperta dei prodotti.",
     challenge:
@@ -61,6 +71,9 @@ export const projects = [
     secondaryImage: "/images/campo-concept.svg",
     color: "#e7cdaa",
     intro: "Tre rubriche. Una torrefazione.",
+    summary:
+      "Un sistema di contenuti per un caffè immaginario. Grafiche, tono di voce e sito seguono la stessa direzione, mantenendo riconoscibile il brand.",
+    previewLabel: "campo.cafe / concept",
     description:
       "Un concept social per una torrefazione immaginaria. Ho costruito tre esempi di contenuto: un nuovo caffè, un piccolo approfondimento e un invito a passare in negozio. Il sito coordinato estende lo stesso linguaggio fuori dal feed.",
     challenge:
@@ -83,21 +96,26 @@ export const services = [
     tag: "DESIGN & SVILUPPO WEB",
     text: "Progetto e sviluppo il posto in cui raccontare bene la tua attività. Metto in ordine pagine, testi e interazioni, con attenzione a mobile, velocità e contatto. Il design parte da quello che hai da dire.",
     details: [
-      "Web design su misura",
-      "Sviluppo responsive",
-      "SEO e performance di base",
+      "Struttura e design su misura",
+      "Sviluppo responsive e backend",
+      "Animazioni e interazioni",
+      "Pubblicazione e controllo finale",
     ],
+    type: "Sito web",
   },
   {
     number: "02",
-    title: "Social media.",
+    title: "Gestione social.",
     tag: "SOCIAL MEDIA MANAGEMENT",
-    text: "Ti aiuto a decidere cosa pubblicare e perché. Definiamo pubblico, temi e tono di voce; preparo un piano editoriale, visual e didascalie. Canali, frequenza e gestione vengono concordati prima di iniziare.",
+    text: "Dal piano editoriale alla pubblicazione: preparo grafiche e testi, organizzo i contenuti e seguo commenti e messaggi. Canali, frequenza e tempi di gestione si concordano nella proposta.",
     details: [
       "Piano editoriale",
-      "Design dei contenuti",
-      "Gestione e pubblicazione",
+      "Grafiche e testi",
+      "Programmazione e pubblicazione",
+      "Gestione di commenti e messaggi",
+      "Monitoraggio e report concordati",
     ],
+    type: "Gestione social",
   },
   {
     number: "03",
@@ -109,6 +127,7 @@ export const services = [
       "Messaggi di brand",
       "Percorso verso il contatto",
     ],
+    type: "Sito + social",
   },
 ];
 

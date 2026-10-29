@@ -1,5 +1,6 @@
 import React, { useEffect, useId, useRef, useState } from "react";
 import "./hero-scene.css";
+import useSceneActivity from "./useSceneActivity";
 
 function FallbackSculpture({ id }) {
   return (
@@ -143,38 +144,48 @@ export default function HeroScene({ paused = false, active = true }) {
   const rootRef = useRef(null);
   const canvasRef = useRef(null);
   const controlsRef = useRef(null);
-  const latestRef = useRef({ paused, active });
-  latestRef.current = { paused, active };
+  const activity = useSceneActivity(rootRef, { paused, active });
+  const latestRef = useRef(activity);
+  latestRef.current = activity;
   const [ready, setReady] = useState(false);
-  const [visible, setVisible] = useState(true);
-  const [pageVisible, setPageVisible] = useState(!document.hidden);
+  const [hasEntered, setHasEntered] = useState(false);
   const id = `hscene-${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
 
+  // Once a visitor reaches the scene, preserve its GPU resources across scrolls.
+  // Initial reduced motion, hidden tabs and hash links to later sections keep
+  // the SVG and do not download Three until the visitor can use the animation.
   useEffect(() => {
-    const visibility = () => setPageVisible(!document.hidden);
-    const observer = new IntersectionObserver(
-      ([entry]) => setVisible(entry.isIntersecting),
-      { threshold: 0.01 },
-    );
-    observer.observe(rootRef.current);
-    document.addEventListener("visibilitychange", visibility);
-    return () => {
-      observer.disconnect();
-      document.removeEventListener("visibilitychange", visibility);
-    };
-  }, []);
+    if (activity.running) setHasEntered(true);
+  }, [activity.running]);
 
   useEffect(() => {
+    if (!hasEntered) return undefined;
     let disposed = false;
-    let cleanup = () => {};
+    const disposers = [];
     let startFrame = 0;
+    let ownedControls = null;
     const root = rootRef.current;
     const canvas = canvasRef.current;
     if (!root || !canvas) return undefined;
+    const track = (resource) => {
+      disposers.push(() => resource.dispose());
+      return resource;
+    };
+    // Registration happens as resources are created, so failures at any point
+    // release everything acquired so far. Cleanup is safe to call again.
+    const cleanup = () => {
+      if (controlsRef.current === ownedControls) controlsRef.current = null;
+      while (disposers.length) {
+        try {
+          disposers.pop()();
+        } catch {
+          /* Continue releasing other resources. */
+        }
+      }
+    };
 
     async function initialize() {
       try {
-        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
         // Check GPU capability before downloading Three. Low-power and software
         // devices retain the fully composed, animated SVG sculpture.
         const context = canvas.getContext("webgl2", {
@@ -184,8 +195,9 @@ export default function HeroScene({ paused = false, active = true }) {
           failIfMajorPerformanceCaveat: true,
         });
         if (!context) return;
-        cleanup = () =>
-          context.getExtension("WEBGL_lose_context")?.loseContext();
+        disposers.push(() =>
+          context.getExtension("WEBGL_lose_context")?.loseContext(),
+        );
         // Some Chromium builds accept the caveat flag for a CPU rasterizer.
         // Detect only explicit software renderers; privacy-filtered/unknown and
         // ordinary Intel/AMD/Apple GPUs keep the interactive WebGL sculpture.
@@ -199,7 +211,6 @@ export default function HeroScene({ paused = false, active = true }) {
           )
         ) {
           cleanup();
-          cleanup = () => {};
           return;
         }
         const [THREE, { RoomEnvironment }] = await Promise.all([
@@ -207,13 +218,15 @@ export default function HeroScene({ paused = false, active = true }) {
           import("three/addons/environments/RoomEnvironment.js"),
         ]);
         if (disposed) return;
-        const renderer = new THREE.WebGLRenderer({
-          canvas,
-          context,
-          alpha: true,
-          antialias: true,
-          powerPreference: "low-power",
-        });
+        const renderer = track(
+          new THREE.WebGLRenderer({
+            canvas,
+            context,
+            alpha: true,
+            antialias: true,
+            powerPreference: "low-power",
+          }),
+        );
         renderer.setClearColor(0x000000, 0);
         renderer.outputColorSpace = THREE.SRGBColorSpace;
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -222,11 +235,16 @@ export default function HeroScene({ paused = false, active = true }) {
         const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
         camera.position.set(0, 0.12, 7.3);
         const pmrem = new THREE.PMREMGenerator(renderer);
-        const room = new RoomEnvironment();
-        const environment = pmrem.fromScene(room, 0.045);
-        scene.environment = environment.texture;
-        room.dispose();
-        pmrem.dispose();
+        let room;
+        let environment;
+        try {
+          room = new RoomEnvironment();
+          environment = track(pmrem.fromScene(room, 0.045));
+          scene.environment = environment.texture;
+        } finally {
+          room?.dispose();
+          pmrem.dispose();
+        }
         scene.add(new THREE.HemisphereLight(0xd7e5ff, 0x251041, 2.4));
         const key = new THREE.DirectionalLight(0xe8f4ff, 6);
         key.position.set(-3, 5, 4);
@@ -252,28 +270,32 @@ export default function HeroScene({ paused = false, active = true }) {
         k.lineTo(-0.38, -1.35);
         k.lineTo(-1.06, -1.35);
         k.closePath();
-        const kGeometry = new THREE.ExtrudeGeometry(k, {
-          depth: 0.32,
-          bevelEnabled: true,
-          bevelSegments: 8,
-          steps: 1,
-          bevelSize: 0.15,
-          bevelThickness: 0.17,
-          curveSegments: 12,
-        });
+        const kGeometry = track(
+          new THREE.ExtrudeGeometry(k, {
+            depth: 0.32,
+            bevelEnabled: true,
+            bevelSegments: 8,
+            steps: 1,
+            bevelSize: 0.15,
+            bevelThickness: 0.17,
+            curveSegments: 12,
+          }),
+        );
         kGeometry.center();
-        const frontMaterial = new THREE.MeshPhysicalMaterial({
-          color: 0x606aff,
-          metalness: 0.65,
-          roughness: 0.17,
-          clearcoat: 1,
-          clearcoatRoughness: 0.08,
-          iridescence: 0.3,
-          iridescenceIOR: 1.32,
-          iridescenceThicknessRange: [180, 350],
-          envMapIntensity: 1.6,
-        });
-        const edgeMaterial = frontMaterial.clone();
+        const frontMaterial = track(
+          new THREE.MeshPhysicalMaterial({
+            color: 0x606aff,
+            metalness: 0.65,
+            roughness: 0.17,
+            clearcoat: 1,
+            clearcoatRoughness: 0.08,
+            iridescence: 0.3,
+            iridescenceIOR: 1.32,
+            iridescenceThicknessRange: [180, 350],
+            envMapIntensity: 1.6,
+          }),
+        );
+        const edgeMaterial = track(frontMaterial.clone());
         edgeMaterial.color.setHex(0x6650db);
         edgeMaterial.roughness = 0.12;
         const monogram = new THREE.Mesh(kGeometry, [
@@ -283,13 +305,17 @@ export default function HeroScene({ paused = false, active = true }) {
         sculpture.add(monogram);
         const orbitGroup = new THREE.Group();
         scene.add(orbitGroup);
-        const ringMaterial = new THREE.MeshBasicMaterial({
-          color: 0x9eaeff,
-          transparent: true,
-          opacity: 0.24,
-          depthWrite: false,
-        });
-        const ringGeometry = new THREE.TorusGeometry(2.05, 0.005, 5, 100);
+        const ringMaterial = track(
+          new THREE.MeshBasicMaterial({
+            color: 0x9eaeff,
+            transparent: true,
+            opacity: 0.24,
+            depthWrite: false,
+          }),
+        );
+        const ringGeometry = track(
+          new THREE.TorusGeometry(2.05, 0.005, 5, 100),
+        );
         const ring = new THREE.Mesh(ringGeometry, ringMaterial);
         ring.rotation.set(1.08, -0.18, -0.32);
         orbitGroup.add(ring);
@@ -297,16 +323,18 @@ export default function HeroScene({ paused = false, active = true }) {
         ringTwo.rotation.set(0.2, 0.98, 0.4);
         ringTwo.scale.setScalar(0.92);
         orbitGroup.add(ringTwo);
-        const sphereGeometry = new THREE.SphereGeometry(1, 28, 20);
-        const pinkMaterial = new THREE.MeshPhysicalMaterial({
-          color: 0xbfa4ff,
-          metalness: 0.4,
-          roughness: 0.16,
-          clearcoat: 1,
-          iridescence: 0.2,
-          envMapIntensity: 1.25,
-        });
-        const cyanMaterial = pinkMaterial.clone();
+        const sphereGeometry = track(new THREE.SphereGeometry(1, 28, 20));
+        const pinkMaterial = track(
+          new THREE.MeshPhysicalMaterial({
+            color: 0xbfa4ff,
+            metalness: 0.4,
+            roughness: 0.16,
+            clearcoat: 1,
+            iridescence: 0.2,
+            envMapIntensity: 1.25,
+          }),
+        );
+        const cyanMaterial = track(pinkMaterial.clone());
         cyanMaterial.color.setHex(0x8fddff);
         const pinkOrb = new THREE.Mesh(sphereGeometry, pinkMaterial);
         pinkOrb.scale.setScalar(0.27);
@@ -315,10 +343,10 @@ export default function HeroScene({ paused = false, active = true }) {
         const accentOrb = new THREE.Mesh(sphereGeometry, cyanMaterial);
         accentOrb.scale.setScalar(0.055);
         orbitGroup.add(pinkOrb, cyanOrb, accentOrb);
-        const crystalGeometry = new THREE.OctahedronGeometry(0.14);
+        const crystalGeometry = track(new THREE.OctahedronGeometry(0.14));
         const crystal = new THREE.Mesh(crystalGeometry, cyanMaterial);
         orbitGroup.add(crystal);
-        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesGeometry = track(new THREE.BufferGeometry());
         const particlePositions = new Float32Array(22 * 3);
         for (let i = 0; i < 22; i++) {
           const a = i * 2.39996,
@@ -331,33 +359,26 @@ export default function HeroScene({ paused = false, active = true }) {
           "position",
           new THREE.BufferAttribute(particlePositions, 3),
         );
-        const particleMaterial = new THREE.PointsMaterial({
-          color: 0xa9bcff,
-          size: 0.017,
-          transparent: true,
-          opacity: 0.55,
-          depthWrite: false,
-        });
+        const particleMaterial = track(
+          new THREE.PointsMaterial({
+            color: 0xa9bcff,
+            size: 0.017,
+            transparent: true,
+            opacity: 0.55,
+            depthWrite: false,
+          }),
+        );
         const particles = new THREE.Points(particlesGeometry, particleMaterial);
         scene.add(particles);
-        const media = matchMedia("(prefers-reduced-motion: reduce)");
         const mobile = matchMedia("(max-width: 760px)");
-        let inView = true;
         let lost = false;
         let frame = 0;
         let lastPaint = 0;
         let lastSimulation = 0;
         let elapsed = 0;
-        let reduced = media.matches;
         const pointer = { x: 0, y: 0, currentX: 0, currentY: 0 };
         const canAnimate = () =>
-          !disposed &&
-          inView &&
-          !document.hidden &&
-          latestRef.current.active &&
-          !latestRef.current.paused &&
-          !reduced &&
-          !lost;
+          !disposed && latestRef.current.running && !lost;
 
         function render(time = 0, simulate = false) {
           if (disposed || lost) return;
@@ -367,10 +388,11 @@ export default function HeroScene({ paused = false, active = true }) {
               : 1 / 60;
             elapsed += delta;
             lastSimulation = time;
-            pointer.currentX += (pointer.x - pointer.currentX) * 0.07;
-            pointer.currentY += (pointer.y - pointer.currentY) * 0.07;
+            const blend = 1 - Math.exp(-5 * delta);
+            pointer.currentX += (pointer.x - pointer.currentX) * blend;
+            pointer.currentY += (pointer.y - pointer.currentY) * blend;
           }
-          const t = reduced ? 0 : elapsed;
+          const t = latestRef.current.reducedMotion ? 0 : elapsed;
           sculpture.rotation.set(
             0.08 + pointer.currentY * 0.18,
             -0.27 + Math.sin(t * 0.42) * 0.2 + pointer.currentX * 0.3,
@@ -418,16 +440,30 @@ export default function HeroScene({ paused = false, active = true }) {
           frame = 0;
           lastPaint = 0;
           lastSimulation = 0;
+          if (latestRef.current.reducedMotion) {
+            pointer.currentX = 0;
+            pointer.currentY = 0;
+            leave();
+          }
           if (canAnimate()) frame = requestAnimationFrame(tick);
-          else if (inView && !document.hidden) render();
+          else if (latestRef.current.visible && latestRef.current.pageVisible)
+            render();
         }
+        let pointerBounds = null;
+        let lastSize = "";
         function resize() {
           const width = root.clientWidth,
             height = root.clientHeight;
           if (!width || !height || disposed) return;
-          renderer.setPixelRatio(
-            Math.min(devicePixelRatio || 1, mobile.matches ? 1.25 : 1.4),
+          pointerBounds = null;
+          const ratio = Math.min(
+            devicePixelRatio || 1,
+            mobile.matches ? 1.25 : 1.4,
           );
+          const size = `${width}:${height}:${ratio}`;
+          if (size === lastSize) return;
+          lastSize = size;
+          renderer.setPixelRatio(ratio);
           renderer.setSize(width, height, false);
           camera.aspect = width / height;
           camera.position.z = camera.aspect < 0.9 ? 8.2 : 7.3;
@@ -435,8 +471,8 @@ export default function HeroScene({ paused = false, active = true }) {
           render();
         }
         function point(event) {
-          if (reduced || latestRef.current.paused) return;
-          const bounds = root.getBoundingClientRect();
+          if (!canAnimate()) return;
+          const bounds = (pointerBounds ||= root.getBoundingClientRect());
           pointer.x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2;
           pointer.y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 2;
         }
@@ -447,71 +483,58 @@ export default function HeroScene({ paused = false, active = true }) {
         function release(event) {
           if (event.pointerType !== "mouse") leave();
         }
-        function preference(event) {
-          reduced = event.matches;
-          leave();
-          synchronize();
+        function invalidateBounds() {
+          pointerBounds = null;
         }
         function contextLost(event) {
           event.preventDefault();
           lost = true;
           cancelAnimationFrame(frame);
+          frame = 0;
           setReady(false);
         }
+        function contextRestored() {
+          if (disposed) return;
+          // Three restores its context before this listener runs.
+          lost = false;
+          lastSize = "";
+          resize();
+          render();
+          setReady(true);
+          synchronize();
+        }
         const resizeObserver = new ResizeObserver(resize);
-        const intersection = new IntersectionObserver(
-          ([entry]) => {
-            inView = entry.isIntersecting;
-            setVisible(inView);
-            synchronize();
-          },
-          { threshold: 0.01 },
-        );
-        resizeObserver.observe(root);
-        intersection.observe(root);
-        root.addEventListener("pointermove", point, { passive: true });
-        root.addEventListener("pointerdown", point, { passive: true });
-        root.addEventListener("pointerleave", leave);
-        root.addEventListener("pointerup", release);
-        root.addEventListener("pointercancel", leave);
-        document.addEventListener("visibilitychange", synchronize);
-        media.addEventListener("change", preference);
-        mobile.addEventListener("change", resize);
-        canvas.addEventListener("webglcontextlost", contextLost);
-        controlsRef.current = { synchronize };
-        resize();
-        render();
-        setReady(true);
-        synchronize();
-        cleanup = () => {
+        disposers.push(() => {
           cancelAnimationFrame(frame);
           resizeObserver.disconnect();
-          intersection.disconnect();
           root.removeEventListener("pointermove", point);
           root.removeEventListener("pointerdown", point);
           root.removeEventListener("pointerleave", leave);
           root.removeEventListener("pointerup", release);
           root.removeEventListener("pointercancel", leave);
-          document.removeEventListener("visibilitychange", synchronize);
-          media.removeEventListener("change", preference);
+          window.removeEventListener("scroll", invalidateBounds);
           mobile.removeEventListener("change", resize);
           canvas.removeEventListener("webglcontextlost", contextLost);
-          kGeometry.dispose();
-          ringGeometry.dispose();
-          sphereGeometry.dispose();
-          crystalGeometry.dispose();
-          particlesGeometry.dispose();
-          particleMaterial.dispose();
-          frontMaterial.dispose();
-          edgeMaterial.dispose();
-          ringMaterial.dispose();
-          pinkMaterial.dispose();
-          cyanMaterial.dispose();
-          environment.dispose();
-          renderer.dispose();
-          controlsRef.current = null;
-        };
+          canvas.removeEventListener("webglcontextrestored", contextRestored);
+        });
+        resizeObserver.observe(root);
+        root.addEventListener("pointermove", point, { passive: true });
+        root.addEventListener("pointerdown", point, { passive: true });
+        root.addEventListener("pointerleave", leave);
+        root.addEventListener("pointerup", release);
+        root.addEventListener("pointercancel", leave);
+        window.addEventListener("scroll", invalidateBounds, { passive: true });
+        mobile.addEventListener("change", resize);
+        canvas.addEventListener("webglcontextlost", contextLost);
+        canvas.addEventListener("webglcontextrestored", contextRestored);
+        ownedControls = { synchronize };
+        controlsRef.current = ownedControls;
+        resize();
+        render();
+        setReady(true);
+        synchronize();
       } catch {
+        cleanup();
         if (!disposed) setReady(false);
       }
     }
@@ -524,16 +547,21 @@ export default function HeroScene({ paused = false, active = true }) {
       cancelAnimationFrame(startFrame);
       cleanup();
     };
-  }, []);
+  }, [hasEntered]);
 
   useEffect(() => {
     controlsRef.current?.synchronize();
-  }, [paused, active]);
+  }, [
+    activity.running,
+    activity.reducedMotion,
+    activity.visible,
+    activity.pageVisible,
+  ]);
   return (
     <div
       ref={rootRef}
       className={`hero-scene hscene-root ${ready ? "hscene-ready" : ""}`}
-      data-running={active && !paused && visible && pageVisible}
+      data-running={activity.running}
       aria-hidden="true"
     >
       <div className="hscene-floor" />

@@ -1,26 +1,33 @@
-# Verifiche — Studio 03
+# Verifiche — Studio 04
 
-Redesign scuro, blu elettrico e viola, con scene WebGL/CSS 3D e laboratorio web/social. Le impostazioni del dominio restano invariate.
+Apertura concreta, accesso diretto ai progetti, demo completa di Forma Studio, email visibile e servizi chiariti. Dominio e impostazioni HTTPS restano invariati.
 
-## Comportamento verificato
+## Comportamento
 
-- Build Vite completata; 14 test Playwright superati, nessun test saltato.
-- Nessun errore JavaScript o richiesta fallita nella verifica locale degli asset.
-- Nessuno scorrimento orizzontale a 320, 390, 768 e 1440 px; contatti raggiungibili.
-- Composizione SVG completa senza GPU, movimento effettivo e pausa verificati; preferenza di movimento ridotto rispettata.
-- Laboratorio: cambio settore, dimensioni, menu, note, didascalie dei post, vista coordinata e accesso ai contatti.
-- Tre concept esplorabili su desktop e telefono, dichiarazione esplicita dei brand immaginari, Escape e ripristino del focus.
-- Menu mobile con focus contenuto, Escape e ripristino al passaggio desktop.
-- FAQ con stato accessibile; servizio social preselezionato nel brief.
-- Form con email facoltativa, messaggio completo, download e modifica. Nessun messaggio di test inviato al numero reale.
-- Axe: zero violazioni WCAG A/AA e 2.1 AA rilevate nei cinque stati controllati: desktop, progetto Forma, contatti, menu mobile e homepage a 390 px. Questo non sostituisce una valutazione completa con tecnologie assistive.
+- Build Vite multipagina completata: portfolio e `/demo/forma/` hanno ingressi separati.
+- **25/25 test Playwright superati**, 0 falliti e 0 saltati: 16 portfolio, 9 demo.
+- Layout senza scorrimento orizzontale a 320, 390, 768 e 1440 px.
+- Apertura richiesta, pulsante `#progetti`, accesso diretto alla demo dalla scheda e dal dialog, email `mailto:kirillbielokon@gmail.com` in pagina, footer e contatti.
+- Portfolio: laboratorio, concept e disclosure, focus dei dialog, menu mobile, FAQ, selezione servizio, brief WhatsApp completo con email facoltativa, modifica e download. Nessun messaggio inviato al numero reale.
+- Forma: quattro pagine principali e tre approfondimenti, filtri, zoom immagini, progetto successivo, cronologia, refresh e collegamenti diretti a pagine interne.
+- Modulo Forma: validazione nativa, riferimento al progetto preselezionato, riepilogo completo, copia, download e modifica con dati e focus conservati. Nessuna richiesta POST e nessuna falsa conferma di invio.
+- Dichiarazione di progetto personale dimostrativo visibile; studio, progetti e visualizzazioni sono immaginari. Demo esclusa dall’indicizzazione con `noindex,follow`.
+- Axe: **zero violazioni** WCAG A/AA e 2.1 AA nei sette stati verificati: portfolio, Forma home, archivio, dettaglio, contatti, riepilogo e menu mobile. Non sostituisce una valutazione completa con tecnologie assistive.
 
-## Scene e prestazioni
+## JavaScript e animazioni
 
-La scena hero usa Three.js su GPU compatibili e conserva una composizione SVG negli altri casi. Il controllo esplicito dei renderer software avviene prima dell’import di Three: evita il costo del rendering 3D su CPU. Una seconda scena usa CSS 3D, senza un secondo contesto WebGL. Pausa, movimento ridotto e visibilità delle scene controllano il movimento continuo.
+Le scene condividono `useSceneActivity`: una gestione unica per visibilità, scheda nascosta, pausa e preferenza di movimento ridotto. La GPU si inizializza soltanto al primo ingresso effettivo in una scena visibile. I renderer software mantengono la composizione SVG senza scaricare Three.
 
-Lighthouse mobile isolato sulla build locale: **prestazioni 99, accessibilità 100, best practice 100, SEO 100**. FCP/LCP 0,9 s; TBT 140 ms; CLS 0; Speed Index 1,4 s. Il browser di laboratorio usa la composizione SVG, perché dispone di un renderer software. Queste misure non descrivono le prestazioni WebGL su ogni dispositivo reale.
+Verifiche mirate aggiuntive del ciclo WebGL: cambio della preferenza di movimento ridotto a runtime, pausa, uscita dallo schermo, scheda nascosta, errore durante inizializzazione, perdita e ripristino del contesto, rilascio all’unmount. Tutti i casi verificati hanno mantenuto un’immagine completa e non hanno prodotto errori JavaScript. Il damping tiene conto del tempo trascorso anziché del numero di frame.
 
-## Hosting
+Il movimento del portfolio aggiorna le proprietà CSS solo se cambia l’avanzamento. Le inclinazioni del puntatore usano al massimo un aggiornamento per frame, geometria memorizzata e correzione della posizione dopo lo scroll. I dati di progetti, servizi e FAQ provengono da `content.js`, evitando copie incoerenti.
 
-Verifica API in sola lettura: Pages dal ramo `gh-pages`, dominio `kirillbielokon.com`, HTTPS forzato. Prima dell’aggiornamento, il dominio principale risponde HTTPS 200 e `www` reindirizza a quello principale con 301. Deployment Studio 03 riuscito: run `40677881602`, build `414cf5f4b63b2958ef8906b1a853fc63ca7e2f38`. Homepage, JS, CSS, favicon e immagine social pubblici coincidono con la build verificata; `www` restituisce lo stesso HTML dopo il redirect. La navigazione remota Chromium resta limitata dal trust store dell’ambiente; richieste HTTPS Python/OS con verifica TLS e test funzionali locali sono completati.
+## Prestazioni
+
+Lighthouse mobile isolato sul portfolio: **99 prestazioni, 100 accessibilità, 100 best practice, 100 SEO**. FCP/LCP 1,1 s, TBT 130 ms, CLS 0,001. L’ambiente usa il fallback SVG perché il renderer è software: questi numeri non descrivono le prestazioni WebGL su ogni dispositivo.
+
+La demo è passata da 82 a **96 prestazioni**, con **100 accessibilità e 100 best practice**: FCP 0,9 s, LCP 2,8 s, TBT 10 ms, CLS 0,001, Speed Index 0,9 s. Le fotografie hanno varianti WebP 640/1024/1280/1536, con `srcSet` e `sizes`; la villa mobile a 1024 px passa da 342 KB a 105 KB. La risorsa viene anticipata solo sulla homepage, mentre lo zoom conserva gli originali. La fotografia principale è visibile subito; le animazioni di ingresso restano su titoli e dettagli. La categoria SEO della demo non è inclusa nel punteggio perché la pagina è intenzionalmente `noindex`. Sono misure di laboratorio locali, non dati reali dei visitatori.
+
+## Pubblicazione
+
+Lo stato del deployment e le verifiche HTTPS di homepage, demo e asset pubblici vengono registrati in `PUBBLICAZIONE.md`. I test funzionali sono eseguiti sulla build locale. Le richieste HTTPS al dominio mantengono la verifica TLS; il browser remoto di questo ambiente ha in precedenza mostrato limiti nel proprio trust store, senza disabilitare tale verifica.

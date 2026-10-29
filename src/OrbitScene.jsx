@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
+import useSceneActivity from "./useSceneActivity";
 import {
   ArrowUpRight,
   Bookmark,
@@ -11,29 +12,11 @@ import "./orbit-scene.css";
 /** A second, lightweight 3D composition: real CSS perspective, no extra GL context. */
 export default function OrbitScene({ paused = false, active = true }) {
   const root = useRef(null);
-  const [visible, setVisible] = useState(true);
-  const [pageVisible, setPageVisible] = useState(!document.hidden);
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    const element = root.current;
-    const media = matchMedia("(prefers-reduced-motion: reduce)");
-    const preference = () => setReduced(media.matches);
-    const visibility = () => setPageVisible(!document.hidden);
-    preference();
-    const observer = new IntersectionObserver(
-      ([entry]) => setVisible(entry.isIntersecting),
-      { rootMargin: "40px", threshold: 0 },
-    );
-    observer.observe(element);
-    document.addEventListener("visibilitychange", visibility);
-    media.addEventListener("change", preference);
-    return () => {
-      observer.disconnect();
-      document.removeEventListener("visibilitychange", visibility);
-      media.removeEventListener("change", preference);
-    };
-  }, []);
-  const running = active && !paused && visible && pageVisible && !reduced;
+  const { running } = useSceneActivity(root, {
+    paused,
+    active,
+    rootMargin: "40px",
+  });
   return (
     <div
       ref={root}
