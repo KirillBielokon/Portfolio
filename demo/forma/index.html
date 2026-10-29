@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f3f1ea" />
+    <meta name="robots" content="noindex,follow" />
+    <meta
+      name="description"
+      content="Forma Studio: una demo web completa di Kirill Bielokon. Esplora progetti, studio e modulo di contatto dimostrativo. Brand immaginario, progetto personale."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href="https://kirillbielokon.com/demo/forma/" />
+    <script>
+      // Discover the opening image before React, without downloading it for
+      // direct links to other demo pages. Keep sizes aligned with images.js.
+      (() => {
+        const route = location.hash.split("?")[0];
+        if (route && route !== "#" && route !== "#/") return;
+        const photo = document.createElement("link");
+        photo.rel = "preload";
+        photo.as = "image";
+        photo.href = "/images/forma-demo/villa-1024.webp";
+        photo.imageSrcset = "640 1024 1280 1536"
+          .split(" ")
+          .map((width) => `/images/forma-demo/villa-${width}.webp ${width}w`)
+          .join(", ");
+        photo.imageSizes =
+          "(min-width: 1700px) 1540px, (min-width: 1512px) 1400px, (min-width: 1151px) calc(100vw - 112px), (min-width: 801px) calc(100vw - 76px), (min-width: 561px) calc(100vw - 44px), (min-width: 361px) calc(100vw - 36px), calc(100vw - 32px)";
+        photo.fetchPriority = "high";
+        document.head.append(photo);
+      })();
+    </script>
+    <title>Forma Studio — Demo di Kirill Bielokon</title>
+    <script type="module" crossorigin src="/assets/forma-CsnEslPd.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/index-SUMUkgA-.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-Dqr6y4op.css">
+    <link rel="stylesheet" crossorigin href="/assets/forma-BPB5rbJr.css">
+  </head>
+  <body>
+    <div id="forma-root"></div>
+  </body>
+</html>
