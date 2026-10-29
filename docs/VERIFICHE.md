@@ -30,4 +30,4 @@ La demo è passata da 82 a **96 prestazioni**, con **100 accessibilità e 100 be
 
 ## Pubblicazione
 
-Lo stato del deployment e le verifiche HTTPS di homepage, demo e asset pubblici vengono registrati in `PUBBLICAZIONE.md`. I test funzionali sono eseguiti sulla build locale. Le richieste HTTPS al dominio mantengono la verifica TLS; il browser remoto di questo ambiente ha in precedenza mostrato limiti nel proprio trust store, senza disabilitare tale verifica.
+Deployment riuscito della build `6630ebb195a7be8b5654a49fe9b9f29a3b98dcc8`, run GitHub Pages `40956940095`. Il controllo HTTPS confronta 26 pagine e asset pubblici con la build locale, incluse homepage, demo, bundle e varianti fotografiche: tutti corrispondono. Anche `www` restituisce la homepage corretta dopo il redirect. Dettagli in `PUBBLICAZIONE.md`. I test funzionali sono eseguiti sulla build locale. Le richieste HTTPS al dominio mantengono la verifica TLS; il browser remoto di questo ambiente ha in precedenza mostrato limiti nel proprio trust store, senza disabilitare tale verifica.

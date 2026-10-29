@@ -1,6 +1,18 @@
 # Pubblicazione su kirillbielokon.com
 
-## Stato attuale — Studio 03
+## Stato attuale — Studio 04
+
+Pubblicati il portfolio aggiornato e la demo completa **https://kirillbielokon.com/demo/forma/**. Sorgente: `b1f25d9`. Build: `6630ebb195a7be8b5654a49fe9b9f29a3b98dcc8`.
+
+[GitHub Pages run 40956940095](https://github.com/KirillBielokon/Portfolio/actions/runs/40956940095): **SUCCESS**, SHA corrispondente alla build. API Pages: `built`, dominio `kirillbielokon.com`, HTTPS forzato.
+
+Verifica pubblica completata con `scripts/verify-publication.py`: **26 pagine e asset HTTPS corrispondono byte per byte alla build locale**, inclusi i due ingressi HTML, i bundle, favicon, immagine social e tutte le varianti fotografiche di Forma. Anche `www` restituisce la homepage corretta dopo il redirect. Verifica TLS mantenuta abilitata.
+
+La demo usa percorsi hash per rendere navigazione, cronologia e refresh affidabili su GitHub Pages. Non richiede un server applicativo. Il modulo è una dimostrazione locale con validazione, riepilogo, copia e download; i contatti effettivi di Kirill sono email e WhatsApp.
+
+Build e 25 test funzionali locali superati; risultati in `VERIFICHE.md`. Nessun cambio DNS, custom domain o impostazioni HTTPS. Le sezioni successive conservano le pubblicazioni precedenti e lo storico della migrazione.
+
+## Pubblicazione precedente — Studio 03
 
 Pubblicato il redesign scuro blu elettrico/viola, con scene 3D e laboratorio interattivo. Sorgente: `6704ba2`. Build pubblicata: `414cf5f4b63b2958ef8906b1a853fc63ca7e2f38`.
 
