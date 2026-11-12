@@ -1,6 +1,6 @@
-# Kirill Bielokon — Landing page e siti web
+# Kirill Bielokon — Siti web e software su misura
 
-Portfolio in italiano per sviluppo web e social media management. Pubblicato con GitHub Pages su **https://kirillbielokon.com/**; IONOS gestisce il dominio. DNS, custom domain e HTTPS sono già configurati: gli aggiornamenti del sito non richiedono interventi sul dominio.
+Portfolio in italiano: siti web, landing page, gestionali su misura e social media. Pubblicato con GitHub Pages su **https://kirillbielokon.com/**; IONOS gestisce il dominio. DNS, custom domain e HTTPS sono già configurati: gli aggiornamenti del sito non richiedono interventi sul dominio.
 
 ## Sviluppo
 
@@ -20,20 +20,25 @@ npm run build
 npm test
 ```
 
-I 25 test Playwright avviano la preview di produzione sulla porta 4173. Verificano layout a 320/390/768/1440 px, fallback e pausa, movimento ridotto, laboratorio web/social, concept, finestre, FAQ, menu da tastiera e brief WhatsApp completo. Coprono anche navigazione reale della demo, cronologia e refresh, filtri, gallerie, menu mobile e form locale senza invii esterni. Usano `/usr/bin/chromium` se disponibile; altrove impostare `CHROMIUM_PATH` o installare il browser Playwright.
+I 21 test Playwright avviano la preview di produzione sulla porta 4173. Verificano contenuti leggibili senza JavaScript, layout a 320/390/768/1024/1440 px senza scroll orizzontale, immagini, navigazione, menu mobile, FAQ, movimento ridotto e brief WhatsApp. Coprono anche la demo Forma: navigazione, cronologia e refresh, filtri, gallerie, menu mobile e form locale senza invii esterni. Usano `/usr/bin/chromium` se disponibile; altrove impostare `CHROMIUM_PATH` o installare il browser Playwright.
 
-## Architettura
+## Architettura (studio-05, novembre 2026)
 
-- `src/main.jsx` e `src/styles.css`: layout blu notte, blu elettrico e viola, tipografia Sora/DM Sans, superfici in prospettiva, identità estrusa, orbite, animazioni di ingresso e pausa globale.
-- `src/useSceneActivity.js`: ciclo condiviso di visibilità, pausa e movimento ridotto. Inizializzazione GPU differita al primo ingresso, cleanup anche su errori parziali e recupero dopo perdita del contesto.
-- `src/HeroScene.jsx`: K estrusa e materiali iridescenti Three.js, sfere, cristallo, particelle e reazione al puntatore. Three viene importato soltanto dopo il controllo della GPU. Renderer software, assenza di WebGL e movimento ridotto usano una composizione SVG completa.
-- `src/OrbitScene.jsx`: browser, feed, cubo e anelli in CSS 3D. Le scene sospendono il movimento fuori schermo e nelle schede nascoste.
-- `src/ProofLab.jsx`: tre identità dimostrative, sito realmente adattabile a mobile, menu e note, post social con didascalie e obiettivi. I controlli trasformano la composizione senza servizi esterni.
-- `src/Dialogs.jsx`: dialog nativi e preparazione del brief nel browser, con email facoltativa, copia, download e invio volontario tramite WhatsApp.
-- `src/content.js`: fonte unica per progetti, servizi, FAQ e contatti confermati. I brand sono immaginari; non vengono inventati clienti, testimonianze o risultati.
-- `public/images/`: concept originali, con fotografie generate per gli studi Forma/Aether incorporate negli SVG. Font distribuiti con licenze OFL in `public/fonts/`.
+Pagina **statica** (`index.html`): tutti i testi sono nell'HTML, quindi Google li legge subito senza eseguire JavaScript. Niente React né Three.js sulla home: JS di circa 4 kB.
 
-Contatti: `+39 389 632 2180` su WhatsApp e **kirillbielokon@gmail.com** via email cliccabile. Il sito non invia messaggi automaticamente, non salva i dati del form e non include tracker.
+- `index.html`: contenuti, meta SEO, Open Graph e dati strutturati `ProfessionalService` (JSON-LD).
+- `src/site.css`: carta + inchiostro + un accento elettrico (`--accent`). Font Geist, Geist Mono e Instrument Serif corsivo, tutti locali.
+- `src/site.js`: comparsa al scroll, inclinazione 3D della scena in apertura, menu mobile, FAQ, pulsante WhatsApp flottante e brief che prepara il messaggio per WhatsApp o email (nessun dato salvato o inviato dal sito). Rispetta “riduci movimento”.
+- `public/images/lavori/`: schermate WebP dei progetti reali (Pianura Bonsai, gestionale Studio) con dati di prova.
+- `public/images/*.svg`: concept degli studi personali (Forma, Aether, Campo).
+
+### Statistiche visite
+
+In `src/site.js` imposta `GOATCOUNTER_CODE` con il codice del tuo account gratuito [GoatCounter](https://www.goatcounter.com) (senza cookie, nessun banner necessario). Vengono contati anche i clic su WhatsApp, email e brief (`clic-…`).
+
+### Lighthouse (build di produzione, mobile)
+
+Prestazioni 99 · Accessibilità 100 · Best practice 100 · SEO 100.
 
 ## Demo completa di Forma
 
@@ -58,4 +63,3 @@ Lo script aggiorna `gh-pages` con un indice temporaneo, preserva il checkout e l
 
 [Desktop](docs/anteprima-desktop.png) · [Mobile](docs/anteprima-mobile.png) · [Pagina completa](docs/anteprima-completa.png) · [Demo Forma](docs/anteprima-forma.png)
 
-Per rigenerare anteprime e immagine social, avviare il server e usare `PREVIEW_ORIGIN=http://127.0.0.1:5173 node scripts/capture-previews.mjs`.

@@ -46,8 +46,7 @@ def main():
             print(f'gh-pages already contains this build: {parent}')
             return
 
-    args = ['-c', 'user.name=Codex', '-c', 'user.email=codex@openai.com',
-            'commit-tree', tree]
+    args = ['commit-tree', tree]
     if parent:
         args.extend(['-p', parent])
     args.extend(['-m', 'Publish portfolio static build for kirillbielokon.com'])
