@@ -25,7 +25,6 @@ test("content is in the HTML for search engines, without JavaScript", async ({ b
   const page = await ctx.newPage();
   await page.goto("/");
   await expect(page.locator("h1")).toContainText("Siti che portano");
-  await expect(page.getByRole("heading", { name: "Pianura Bonsai" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Studio", exact: true })).toBeVisible();
   // Reveal animations must not hide content when JS is off.
   await expect(page.locator(".case__lead").first()).toHaveCSS("opacity", "1");

@@ -29,7 +29,7 @@ Pagina **statica** (`index.html`): tutti i testi sono nell'HTML, quindi Google l
 - `index.html`: contenuti, meta SEO, Open Graph e dati strutturati `ProfessionalService` (JSON-LD).
 - `src/site.css`: carta + inchiostro + un accento elettrico (`--accent`). Font Geist, Geist Mono e Instrument Serif corsivo, tutti locali.
 - `src/site.js`: comparsa al scroll, inclinazione 3D della scena in apertura, menu mobile, FAQ, pulsante WhatsApp flottante e brief che prepara il messaggio per WhatsApp o email (nessun dato salvato o inviato dal sito). Rispetta “riduci movimento”.
-- `public/images/lavori/`: schermate WebP dei progetti reali (Pianura Bonsai, gestionale Studio) con dati di prova.
+- `public/images/lavori/`: schermate WebP del gestionale Studio, con soli dati di prova.
 - `public/images/*.svg`: concept degli studi personali (Forma, Aether, Campo).
 
 ### Statistiche visite
